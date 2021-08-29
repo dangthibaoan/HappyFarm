@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "90432380029",
+    "project_id": "happyfarm-176f5",
+    "storage_bucket": "happyfarm-176f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90432380029:android:43c6cc234d4ad2ffc56514",
+        "android_client_info": {
+          "package_name": "com.example.happyfarm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90432380029-9sovgf9v6rb0co15pt4epm54l4oauqpv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-nP1_ytF9AHtLl1xwzd2gx42_WNMXMy8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "90432380029-9sovgf9v6rb0co15pt4epm54l4oauqpv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
