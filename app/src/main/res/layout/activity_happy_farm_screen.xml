@@ -127,6 +127,7 @@
         android:id="@+id/imglua"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imgcachua"
         app:layout_constraintStart_toStartOf="parent"
@@ -138,6 +139,7 @@
         android:id="@+id/imgcachua"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginStart="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imgdaucove"
         app:layout_constraintStart_toEndOf="@id/imglua"
@@ -149,12 +151,24 @@
         android:id="@+id/imgdaucove"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginStart="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/imgcachua"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.427"
         tools:srcCompat="@drawable/ruongdaucove" />
+
+    <ImageView
+        android:id="@+id/imgStorage"
+        android:layout_width="60dp"
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.369"
+        tools:srcCompat="@drawable/ic_storage" />
 
     <ImageView
         android:id="@+id/imgReact"
@@ -195,16 +209,6 @@
         app:layout_constraintHorizontal_bias="0.050"
         app:layout_constraintStart_toStartOf="parent"
         tools:srcCompat="@drawable/icon_shop" />
-    <ImageView
-        android:id="@+id/imgStorage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/imgShop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.050"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@drawable/ic_storage" />
 
     <ImageView
         android:id="@+id/imgDonhangmoi"
