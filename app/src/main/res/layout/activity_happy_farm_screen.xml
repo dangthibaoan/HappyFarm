@@ -178,6 +178,17 @@
         tools:srcCompat="@drawable/ic_storage" />
 
     <ImageView
+        android:id="@+id/imgTrangthai"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="nuttuongtac"
+        app:layout_constraintTop_toBottomOf="@id/imglua"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@drawable/farmcoin" />
+
+    <ImageView
         android:id="@+id/imgReact"
         android:layout_width="85dp"
         android:layout_height="85dp"
