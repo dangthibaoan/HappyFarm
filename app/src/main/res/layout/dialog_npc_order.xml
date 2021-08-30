@@ -3,25 +3,29 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:gravity="center"
+    android:padding="30dp"
+    android:background="@drawable/bg_lichsu"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/txtNPC"
-        android:text="Note:"
+        android:text="@string/raphaela01"
         android:textSize="20dp"
-        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <ImageView
         android:id="@+id/imgSanpham"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@drawable/ic_lua"
         android:layout_width="50dp"
         android:layout_height="50dp" />
     <TextView
         android:id="@+id/txtSoluong"
         android:gravity="center"
-        android:text="0000"
+        android:text="2000"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 </LinearLayout>

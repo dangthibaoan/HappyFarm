@@ -3,19 +3,21 @@
     <string name="doantotnghiep">ĐỒ ÁN TỐT NGHIỆP ĐẠI HỌC MỞ HÀ NỘI</string>
     <string name="cntt">KHOA CÔNG NGHỆ THÔNG TIN</string>
 
-    <string name="raphaela01">Hề lấu, Raphaela đây! Ba ngày nữa tôi đi cầu hôn, bạn bán cho tôi cái này nhé! Muộn nhất ba ngày sau phải gửi đến cho tôi đấy! </string>
+    <string name="img">UI</string>
+
+    <string name="raphaela01">Hề lấu, Raphaela đây! Ba ngày nữa là kỷ niệm 5 năm ngày cưới của tôi với vợ, tôi muốn làm bánh để ăn mừng! Muộn nhất ba ngày sau phải gửi nguyên liệu đến cho tôi đấy! </string>
     <string name="raphaela02">Hola, Raphaela đây! Tôi bị vợ bỏ rồi, cô ấy ghét bánh mì tôi làm! Tôi muốn mua mấy cái này, làm vài món xoa dịu vết thương lòng! Ba ngày sau phải gửi hàng tới chỗ tôi đó!</string>
     <string name="raphaela03">Chào, Raphaela đây! Thằng con tôi nghịch như quỷ ấy! Nó mới bốn tuổi thôi mà phá tanh bành cái bếp nhà tôi rồi! Tôi muốn làm vài món ăn để ổn định lại tâm trạng. Muộn nhất ba ngày sau bạn phải giao hàng tới nhà tôi đó nha.</string>
     <string name="raphaela04">Hề lố, Raphaela đây! Tôi định làm bánh mì cho thằng con tôi, tại nó sắp được đi học rồi. Lân đầu nó đến trường, tôi lo lắng lắm luôn. Muộn nhất ba ngày nữa phải gửi hàng cho tôi đó.</string>
     <string name="raphaela05">Hallo, Raphaela đây! Lâu rồi không đặt hàng chỗ bạn. Con trai tôi có người yêu mà chả hiểu sao tôi thấy buồn bỏ mợ. Đây chẳng lẽ là tâm trạng của người cha sắp gả con trai mà người ta thường nói? Nói chung là ba ngày sau phải gửi hàng cho tôi đấy.</string>
     <string name="raphaela06">Lâu rồi không gặp, Raphaela đây! Ba ngày nữa là đám cưới con trai tôi. Thằng chồng nó tôi thấy ok, hai đứa bọn nó sống với nhau khá ổn, nên tôi định làm bánh tặng bọn nó. Ba ngày nữa phải gửi hàng đến cho tôi đó.</string>
 
-    <string name="michaela01">Xin chào, tôi là Michaela! Ba ngày nữa là sinh nhật bố tôi nên tôi định làm bánh tặng bố. Không biết tôi làm có ngon như bánh bố tôi làm không nhỉ?</string>
-    <string name="michaela02">Xin chào, Michaela đây! Bố tôi bảo bánh lần trước ngon lắm, cơ mà tôi biết nó dở như hạch. Tôi muốn cải thiện tay nghề của mình. Không biết có ai muốn làm chuột bạch không nhỉ? À, ba ngày sau phải gửi nguyên liệu đến cho tôi đó.</string>
-    <string name="michaela03">Chào, Michaela đây! Có một anh chàng nói với tôi là anh ta muốn làm chuột bạch cho tôi cả đời. Ok, tôi sẽ làm bánh cho anh ta cả đời luôn. Ba ngày sau phải gửi nguyên liệu đến cho tôi đó.</string>
-    <string name="michaela04">Chào, Michaela đây! Ba ngày nữa là tròn một năm tôi và người yêu quen nhau. Tôi định làm bánh để kỷ niệm. Nhớ gửi hàng đến đúng giờ cho tôi đó.</string>
-    <string name="michaela05">Lâu rồi không gặp, Michaela đây! Ba ngày nữa tôi với người yêu làm đám cưới, tôi muốn tự tay làm bánh cưới, nên là bạn phải gửi hàng đúng giờ cho tôi đó.</string>
-    <string name="michaela06">Xin chào, Michaela đây! Tôi và thằng vợ đang làm thủ tục nhân nuôi một bé gái tên là Suzie. Tôi muốn làm bánh cho con bé ăn. Muộn nhất ba ngày sau bạn phải gửi nguyên liệu đến nhà tôi đấy.</string>
+    <string name="luca01">Xin chào, tôi là Luca! Ba ngày nữa là sinh nhật bố tôi, nên tôi định làm bánh sinh nhật tặng bố. Không biết tôi làm có ngon như bánh bố tôi làm không nhỉ?</string>
+    <string name="luca02">Xin chào, Luca đây! Bố tôi bảo bánh lần trước ngon lắm, cơ mà tôi biết nó dở như hạch. Tôi muốn cải thiện tay nghề của mình. Không biết có ai muốn làm chuột bạch không nhỉ? À, ba ngày sau phải gửi nguyên liệu đến cho tôi đó.</string>
+    <string name="luca03">Chào, Luca đây! Có một anh chàng nói với tôi là anh ta muốn làm chuột bạch cho tôi cả đời. Ok, tôi sẽ làm bánh cho anh ta ăn cả đời luôn. Ba ngày sau phải gửi nguyên liệu đến cho tôi đó.</string>
+    <string name="luca04">Chào, Luca đây! Ba ngày nữa là tròn một năm tôi và người yêu quen nhau. Tôi định làm bánh để kỷ niệm. Nhớ gửi hàng đến đúng giờ cho tôi đó.</string>
+    <string name="luca05">Lâu rồi không gặp, Luca đây! Ba ngày nữa tôi với người yêu đám cưới rồi, tôi muốn tự tay làm bánh cưới, nên là bạn phải gửi hàng đúng giờ cho tôi đó.</string>
+    <string name="luca06">Xin chào, Luca đây! Tôi và thằng vợ đang làm thủ tục nhận nuôi một bé gái, con bé tên là Krissi. Tôi muốn làm bánh cho con bé ăn. Muộn nhất ba ngày sau bạn phải gửi nguyên liệu đến nhà tôi đấy.</string>
 
 
 </resources>

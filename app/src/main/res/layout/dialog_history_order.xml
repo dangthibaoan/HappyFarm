@@ -3,37 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="@drawable/happyfarm2"
+    android:background="@drawable/bg_lichsu"
     android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    tools:context=".NpcOrderScreen">
+    android:padding="20dp">
 
     <TextView
-        android:text="ĐƠN HÀNG"
-        android:textSize="50dp"
+        android:text="LỊCH SỬ"
+        android:textSize="40dp"
         android:gravity="center"
-        android:textColor="#006600"
+        android:textColor="#000000"
         android:textStyle="bold"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <GridView
+    <ListView
         android:id="@+id/gvNPC"
-        android:numColumns="2"
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"
-        android:layout_height="400dp" />
+        android:layout_height="500dp" />
 
-    <Button
-        android:id="@+id/btnHistory"
-        android:layout_marginTop="30dp"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="xem lịch sử"
-        tools:ignore="ButtonStyle" />
     <Button
         android:id="@+id/btnBack"
         android:layout_marginTop="30dp"
@@ -41,5 +31,4 @@
         android:layout_height="wrap_content"
         android:text="BACK"
         tools:ignore="ButtonStyle" />
-
 </LinearLayout>
