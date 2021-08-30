@@ -178,15 +178,25 @@
         tools:srcCompat="@drawable/ic_storage" />
 
     <ImageView
-        android:id="@+id/imgTrangthai"
+        android:id="@+id/imgDat"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginTop="16dp"
         android:contentDescription="nuttuongtac"
-        app:layout_constraintTop_toBottomOf="@id/imglua"
+        app:layout_constraintTop_toBottomOf="@id/imgStorage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@drawable/farmcoin" />
+        tools:srcCompat="@drawable/dat01" />
+    <ImageView
+        android:id="@+id/imgCay"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="nuttuongtac"
+        app:layout_constraintTop_toBottomOf="@id/imgStorage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@drawable/lua01" />
 
     <ImageView
         android:id="@+id/imgReact"
