@@ -65,7 +65,7 @@
         android:contentDescription="donhangxong"
         app:layout_constraintTop_toBottomOf="@id/imgMoney"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@drawable/donhangcompleted" />
+        tools:srcCompat="@drawable/order_done" />
     <TextView
         android:id="@+id/txtSldhht"
         android:text="0000"
@@ -84,7 +84,7 @@
         android:contentDescription="donhangfail"
         app:layout_constraintTop_toBottomOf="@id/imgDhht"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@drawable/donhangfail" />
+        tools:srcCompat="@drawable/order_fail" />
     <TextView
         android:id="@+id/txtSldhfail"
         android:text="0000"
@@ -209,26 +209,26 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:srcCompat="@drawable/lamdat" />
     <ImageView
-        android:id="@+id/imgWatering"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="tuoinuoc"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/imgReact"
-        app:layout_constraintHorizontal_bias="0.948"
-        tools:srcCompat="@drawable/watering" />
-    <ImageView
         android:id="@+id/imgBonphan"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:contentDescription="bon phan"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imgReact"
+        app:layout_constraintEnd_toStartOf="@id/imgReact"
+        app:layout_constraintHorizontal_bias="0.948"
         tools:srcCompat="@drawable/bonphan" />
+    <ImageView
+        android:id="@+id/imgTuoinc"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:contentDescription="tuoi nuoc"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imgReact"
+        tools:srcCompat="@drawable/tuoinc" />
 
     <ImageView
         android:id="@+id/imgShop"
@@ -252,6 +252,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.948"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@drawable/donhang" />
+        tools:srcCompat="@drawable/order" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
