@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">HappyFarm</string>
-    <string name="doantotnghiep">ĐỒ ÁN TỐT NGHIỆP ĐẠI HỌC MỞ HÀ NỘI</string>
-    <string name="cntt">KHOA CÔNG NGHỆ THÔNG TIN</string>
+    <string name="doantotnghiep">ĐỒ ÁN TỐT NGHIỆP</string>
+    <string name="cnpm">CHUYÊN NGÀNH CÔNG NGHỆ PHẦN MỀM</string>
+    <string name="cntt">KHOA CÔNG NGHỆ THÔNG TIN ĐẠI HỌC MỞ HÀ NỘI</string>
 
     <string name="img">UI</string>
     <string name="kho_hang">KHO HÀNG</string>
@@ -33,8 +34,7 @@
     <string name="luca04">Chào, Luca đây! Ba ngày nữa là tròn một năm tôi và người yêu quen nhau. Tôi định làm bánh để kỷ niệm. Nhớ gửi hàng đến đúng giờ cho tôi đó.</string>
     <string name="luca05">Lâu rồi không gặp, tôi là Luca! Ba ngày nữa tôi với người yêu đám cưới rồi, tôi muốn tự tay làm bánh cưới, nên là bạn phải gửi hàng đúng giờ cho tôi đó.</string>
     <string name="luca06">Xin chào, Luca đây! Tôi và thằng vợ vừa làm xong thủ tục nhận nuôi một bé gái, con bé tên là Krissi. Tôi muốn làm bánh cho con bé ăn. Nhớ gửi nguyên liệu đến nhà tôi sớm.</string>
-
-
+    <string name="nextday">Sang ngày mới</string>
 
 
 </resources>
