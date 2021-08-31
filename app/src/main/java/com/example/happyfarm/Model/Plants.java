@@ -10,14 +10,14 @@ public class Plants {
     private int plant_status;   //0 - chưa trồng, 1 - đã trồng chưa chín, 2 - chín
     private int land_status;    //0 - chưa làm đất, 1 -  đã làm đất, 2 - đã tưới, 3 - đã bón phân, 4 - đã tưới+bón phân
     private Date time_1;        //thời gian trồng
-
-    private String plant_img;
-    private int plant_total;
+    private int plant_price;    //tiền hạt giống
+    private String plant_img;   //icon cây giống
+    private int plant_total;    //tổng sản phẩm có trong kho
 
     public Plants() { }
 
-    //giao diện trồng trọt
-    public Plants(String uid, int plant_id, int plant_lvl, int plant_sl, int plant_status, int land_status, Date time_1){
+    //dùng để xử lý dữ liệu lên database lúc khởi tạo tài khoản mới
+    public Plants(String uid, int plant_id, int plant_lvl, int plant_sl, int plant_status, int land_status, Date time_1, int plant_price, String plant_img, int plant_total) {
         this.uid = uid;
         this.plant_id = plant_id;
         this.plant_lvl = plant_lvl;
@@ -25,9 +25,24 @@ public class Plants {
         this.plant_status = plant_status;
         this.land_status = land_status;
         this.time_1 = time_1;
+        this.plant_price = plant_price;
+        this.plant_img = plant_img;
+        this.plant_total = plant_total;
     }
 
-    //giao diện kho hàng
+    //xử lý dữ liệu khi trồng trọt
+    public Plants(String uid, int plant_id, int plant_lvl, int plant_sl, int plant_status, int land_status, Date time_1, int plant_price){
+        this.uid = uid;
+        this.plant_id = plant_id;
+        this.plant_lvl = plant_lvl;
+        this.plant_sl = plant_sl;
+        this.plant_status = plant_status;
+        this.land_status = land_status;
+        this.time_1 = time_1;
+        this.plant_price = plant_price;
+    }
+
+    //xử lý dữ liệu khi xem kho hàng
     public Plants(String uid, int plant_id, String plant_img, int plant_total){
         this.uid = uid;
         this.plant_id = plant_id;
@@ -105,5 +120,13 @@ public class Plants {
 
     public void setPlant_total(int plant_total) {
         this.plant_total = plant_total;
+    }
+
+    public int getPlant_price() {
+        return plant_price;
+    }
+
+    public void setPlant_price(int plant_price) {
+        this.plant_price = plant_price;
     }
 }
