@@ -7,8 +7,10 @@ public class Order {
     private String order_id;
     private String orderNPC;
     private String orderNote;
-    private int product_id;
-    private int product_sl;
+    private int product_id;         //id sản phẩm, vd: lúa id=1
+    private String product_img;     //ảnh sản phẩm
+    private int product_sl;         //số lượng sản phẩm
+    private int order_price;        //giá trị đơn hàng
     private Date order_time;        //thời gian đơn hàng xuất hiện
     private int order_deadline;     //số ngày phải hoàn thành đơn hàng
     private int order_status;       //trạng thái đơn hàng: 0-chưa nhận, 1-đã nhận, 2-đã hủy, 3-đã xong, 4-bị fail
@@ -20,7 +22,9 @@ public class Order {
                  String orderNPC,
                  String orderNote,
                  int product_id,
+                 String product_img,
                  int product_sl,
+                 int order_price,
                  Date order_time,
                  int order_deadline,
                  int order_status)
@@ -30,7 +34,9 @@ public class Order {
         this.orderNPC = orderNPC;
         this.orderNote = orderNote;
         this.product_id = product_id;
+        this.product_img = product_img;
         this.product_sl = product_sl;
+        this.order_price = order_price;
         this.order_time = order_time;
         this.order_deadline = order_deadline;
         this.order_status = order_status;
@@ -106,5 +112,21 @@ public class Order {
 
     public void setOrder_status(int order_status) {
         this.order_status = order_status;
+    }
+
+    public String getProduct_img() {
+        return product_img;
+    }
+
+    public void setProduct_img(String product_img) {
+        this.product_img = product_img;
+    }
+
+    public int getOrder_price() {
+        return order_price;
+    }
+
+    public void setOrder_pricee(int product_price) {
+        this.order_price = product_price;
     }
 }

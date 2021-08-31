@@ -32,8 +32,9 @@
     <string name="luca04">Chào, Luca đây! Ba ngày nữa là tròn một năm tôi và người yêu quen nhau. Tôi định làm bánh để kỷ niệm. Nhớ gửi hàng đến đúng giờ cho tôi đó.</string>
     <string name="luca05">Lâu rồi không gặp, tôi là Luca! Ba ngày nữa tôi với người yêu đám cưới rồi, tôi muốn tự tay làm bánh cưới, nên là bạn phải gửi hàng đúng giờ cho tôi đó.</string>
     <string name="luca06">Xin chào, Luca đây! Tôi và thằng vợ vừa làm xong thủ tục nhận nuôi một bé gái, con bé tên là Krissi. Tôi muốn làm bánh cho con bé ăn. Muộn nhất ba ngày sau bạn phải gửi nguyên liệu đến nhà tôi đấy.</string>
-
-
+    <string name="npc_order">Đơn hàng của</string>
+    <string name="order_deadline">Hạn chót:</string>
+    <string name="days">ngày</string>
 
 
 </resources>
