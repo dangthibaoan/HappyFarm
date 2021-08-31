@@ -11,8 +11,12 @@ public class Plants {
     private int land_status;    //0 - chưa làm đất, 1 -  đã làm đất, 2 - đã tưới, 3 - đã bón phân, 4 - đã tưới+bón phân
     private Date time_1;        //thời gian trồng
 
+    private String plant_img;
+    private int plant_total;
+
     public Plants() { }
 
+    //giao diện trồng trọt
     public Plants(String uid, int plant_id, int plant_lvl, int plant_sl, int plant_status, int land_status, Date time_1){
         this.uid = uid;
         this.plant_id = plant_id;
@@ -21,6 +25,14 @@ public class Plants {
         this.plant_status = plant_status;
         this.land_status = land_status;
         this.time_1 = time_1;
+    }
+
+    //giao diện kho hàng
+    public Plants(String uid, int plant_id, String plant_img, int plant_total){
+        this.uid = uid;
+        this.plant_id = plant_id;
+        this.plant_img = plant_img;
+        this.plant_total = plant_total;
     }
 
     public String getUid() {
@@ -77,5 +89,21 @@ public class Plants {
 
     public void setTime_1(Date time_1) {
         this.time_1 = time_1;
+    }
+
+    public String getPlant_img() {
+        return plant_img;
+    }
+
+    public void setPlant_img(String plant_img) {
+        this.plant_img = plant_img;
+    }
+
+    public int getPlant_total() {
+        return plant_total;
+    }
+
+    public void setPlant_total(int plant_total) {
+        this.plant_total = plant_total;
     }
 }
