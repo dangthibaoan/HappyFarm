@@ -9,8 +9,8 @@ public class Plants {
     private int plant_sl;       //sản lượng cây trồng cơ bản = cấp bậcx10, vd: lúa cấp 1 sản lượng 1x10=10
     private int plant_status;   //0 - chưa trồng, 1 - đã trồng chưa chín, 2 - chín
     private int land_status;    //0 - chưa làm đất, 1 -  đã làm đất, 2 - đã tưới, 3 - đã bón phân, 4 - đã tưới+bón phân
-    private Date time_1;        //thời gian trồng
-    private int plant_price;    //tiền hạt giống
+    private Date time_1;        //thời gian bắt đầu trồng
+    private int plant_price;    //tiền hạt giống, bị trừ khi gieo hạt
     private String plant_img;   //icon cây giống
     private int plant_total;    //tổng sản phẩm có trong kho
 
