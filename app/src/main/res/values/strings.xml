@@ -17,24 +17,24 @@
     <string name="register">Đăng ký</string>
     <string name="order">ĐƠN HÀNG</string>
     <string name="viewhistory">xem lịch sử</string>
+    <string name="npc_order">Đơn hàng của</string>
+    <string name="days">ngày</string>
 
-
-    <string name="raphaela01">Hề lấu, Raphaela đây! Ba ngày nữa là kỷ niệm 5 năm ngày cưới của tôi với vợ, tôi muốn làm bánh để ăn mừng! Muộn nhất ba ngày sau phải gửi nguyên liệu đến cho tôi đấy! </string>
-    <string name="raphaela02">Hola, Raphaela đây! Tôi bị vợ bỏ rồi, cô ấy ghét bánh mì tôi làm! Tôi muốn mua mấy cái này, làm vài món xoa dịu vết thương lòng! Ba ngày sau phải gửi hàng tới chỗ tôi đó!</string>
-    <string name="raphaela03">Chào, Raphaela đây! Thằng con tôi nghịch như quỷ ấy! Nó mới bốn tuổi thôi mà phá tanh bành cái bếp nhà tôi rồi! Tôi muốn làm vài món ăn để ổn định lại tâm trạng. Muộn nhất ba ngày sau bạn phải giao hàng tới nhà tôi đó nha.</string>
-    <string name="raphaela04">Hề lố, Raphaela đây! Tôi định làm bánh mì cho thằng con tôi, tại nó sắp được đi học rồi. Lân đầu nó đến trường, tôi lo lắng lắm luôn. Muộn nhất ba ngày nữa phải gửi hàng cho tôi đó.</string>
-    <string name="raphaela05">Hallo, Raphaela đây! Lâu rồi không đặt hàng chỗ bạn. Con trai tôi có người yêu mà chả hiểu sao tôi thấy buồn bỏ mợ. Đây chẳng lẽ là tâm trạng của người cha sắp gả con trai mà người ta thường nói? Nói chung là ba ngày sau phải gửi hàng cho tôi đấy.</string>
-    <string name="raphaela06">Lâu rồi không gặp, Raphaela đây! Ba ngày nữa là đám cưới con trai tôi. Thằng chồng nó tôi thấy oke, hai đứa bọn nó sống với nhau khá ổn, nên tôi định làm bánh tặng bọn nó. Ba ngày nữa phải gửi hàng đến cho tôi đó.</string>
+    <string name="raphaela01">Hề lấu, Raphaela đây! Ba ngày nữa là kỷ niệm 5 năm ngày cưới của tôi với vợ, tôi muốn làm bánh để ăn mừng! Gửi nguyên liệu đến nhanh lên cho tôi nhé! </string>
+    <string name="raphaela02">Hola, Raphaela đây! Tôi bị vợ bỏ rồi, cô ấy ghét bánh mì tôi làm! Tôi muốn mua mấy cái này, làm vài món xoa dịu vết thương lòng! Phải gửi hàng sớm tới chỗ tôi đó!</string>
+    <string name="raphaela03">Chào, Raphaela đây! Thằng con tôi nghịch như quỷ ấy! Nó mới bốn tuổi thôi mà phá tanh bành cái bếp nhà tôi rồi! Tôi muốn làm vài món ăn để ổn định lại tâm trạng. Giao hàng tới nhà tôi nhanh lên đó nha.</string>
+    <string name="raphaela04">Hề lố, Raphaela đây! Tôi định làm bánh mì cho thằng con tôi, tại nó sắp được đi học rồi. Lân đầu nó đến trường, tôi lo lắng lắm luôn. Gửi hàng cho tôi càng sớm càng tốt nha.</string>
+    <string name="raphaela05">Hallo, Raphaela đây! Lâu rồi không đặt hàng chỗ bạn. Con trai tôi có người yêu mà chả hiểu sao tôi thấy buồn bỏ mợ. Đây chẳng lẽ là tâm trạng của người cha sắp gả con trai mà người ta thường nói? Nói chung là phải sớm gửi hàng cho tôi đấy.</string>
+    <string name="raphaela06">Lâu rồi không gặp, Raphaela đây! Ba ngày nữa là đám cưới con trai tôi. Thằng chồng nó tôi thấy oke, hai đứa bọn nó sống với nhau khá ổn, nên tôi định làm bánh tặng bọn nó. Gửi hàng đến cho tôi càng nhanh càng tốt nha.</string>
 
     <string name="luca01">Xin chào, tôi là Luca! Ba ngày nữa là sinh nhật bố tôi, nên tôi định làm bánh sinh nhật tặng bố. Không biết tôi làm có ngon như bánh bố tôi làm không nhỉ?</string>
-    <string name="luca02">Xin chào, Luca đây! Bố tôi bảo bánh lần trước ngon lắm, cơ mà tôi biết nó dở như hạch. Tôi muốn cải thiện tay nghề của mình. Không biết có ai muốn làm chuột bạch không nhỉ? À, ba ngày sau phải gửi nguyên liệu đến cho tôi đó.</string>
-    <string name="luca03">Chào, Luca đây! Có một anh chàng nói với tôi là anh ta muốn làm chuột bạch cho tôi cả đời. Oke, tôi sẽ làm bánh cho anh ta ăn cả đời luôn. Ba ngày sau phải gửi nguyên liệu đến cho tôi đó.</string>
+    <string name="luca02">Xin chào, Luca đây! Bố tôi bảo bánh lần trước ngon lắm, cơ mà tôi biết nó dở như hạch. Tôi muốn cải thiện tay nghề của mình. Không biết có ai muốn làm chuột bạch không nhỉ? À, phải gửi nguyên liệu đến sớm cho tôi đó.</string>
+    <string name="luca03">Chào, Luca đây! Có một anh chàng nói với tôi là anh ta muốn làm chuột bạch cho tôi cả đời. Oke, tôi sẽ làm bánh cho anh ta ăn cả đời luôn. Bạn phải gửi nguyên liệu đến cho tôi sớm đó.</string>
     <string name="luca04">Chào, Luca đây! Ba ngày nữa là tròn một năm tôi và người yêu quen nhau. Tôi định làm bánh để kỷ niệm. Nhớ gửi hàng đến đúng giờ cho tôi đó.</string>
     <string name="luca05">Lâu rồi không gặp, tôi là Luca! Ba ngày nữa tôi với người yêu đám cưới rồi, tôi muốn tự tay làm bánh cưới, nên là bạn phải gửi hàng đúng giờ cho tôi đó.</string>
-    <string name="luca06">Xin chào, Luca đây! Tôi và thằng vợ vừa làm xong thủ tục nhận nuôi một bé gái, con bé tên là Krissi. Tôi muốn làm bánh cho con bé ăn. Muộn nhất ba ngày sau bạn phải gửi nguyên liệu đến nhà tôi đấy.</string>
-    <string name="npc_order">Đơn hàng của</string>
-    <string name="order_deadline">Hạn chót:</string>
-    <string name="days">ngày</string>
+    <string name="luca06">Xin chào, Luca đây! Tôi và thằng vợ vừa làm xong thủ tục nhận nuôi một bé gái, con bé tên là Krissi. Tôi muốn làm bánh cho con bé ăn. Nhớ gửi nguyên liệu đến nhà tôi sớm.</string>
+
+
 
 
 </resources>

@@ -38,34 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <TableRow
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:text="@string/order_deadline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/txtOrderDeadline"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:textColor="#FF0000"
-            android:layout_marginStart="20dp"
-            android:text="@string/number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginStart="10dp"
-            android:text="@string/days"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </TableRow>
-
     <ImageView
         android:id="@+id/imgCoin"
         android:src="@drawable/farmcoin"

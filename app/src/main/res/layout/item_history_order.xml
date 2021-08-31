@@ -17,12 +17,24 @@
         android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/txtOrderNote"
-        android:text="@string/name"
+        android:text="@string/raphaela01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/txtProductTotal"
-        android:text="@string/name"
+    <TableRow
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imgSanpham"
+            android:src="@drawable/ic_lua"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/img" />
+        <TextView
+            android:id="@+id/txtProductTotal"
+            android:text="@string/number"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </TableRow>
+
 </LinearLayout>

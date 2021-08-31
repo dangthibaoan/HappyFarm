@@ -12,8 +12,7 @@ public class Order {
     private int product_sl;         //số lượng sản phẩm
     private int order_price;        //giá trị đơn hàng
     private Date order_time;        //thời gian đơn hàng xuất hiện
-    private int order_deadline;     //số ngày phải hoàn thành đơn hàng
-    private int order_status;       //trạng thái đơn hàng: 0-chưa nhận, 1-đã nhận, 2-đã hủy, 3-đã xong, 4-bị fail
+    private int order_status;       //trạng thái đơn hàng: 0-chưa xong, 1- đã xong
 
     public Order(){}
 
@@ -26,7 +25,6 @@ public class Order {
                  int product_sl,
                  int order_price,
                  Date order_time,
-                 int order_deadline,
                  int order_status)
     {
         this.uid = uid;
@@ -38,7 +36,6 @@ public class Order {
         this.product_sl = product_sl;
         this.order_price = order_price;
         this.order_time = order_time;
-        this.order_deadline = order_deadline;
         this.order_status = order_status;
     }
 
@@ -98,14 +95,6 @@ public class Order {
         this.order_time = order_time;
     }
 
-    public int getOrder_deadline() {
-        return order_deadline;
-    }
-
-    public void setOrder_deadline(int order_deadline) {
-        this.order_deadline = order_deadline;
-    }
-
     public int getOrder_status() {
         return order_status;
     }
@@ -129,4 +118,5 @@ public class Order {
     public void setOrder_pricee(int product_price) {
         this.order_price = product_price;
     }
+    
 }
