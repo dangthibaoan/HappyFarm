@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:srcCompat="@drawable/icon_shop" />
+        tools:srcCompat="@drawable/ic_lua" />
 
     <TextView
         android:id="@+id/txtTensp"
@@ -53,33 +53,15 @@
         android:contentDescription="@string/img"
         app:layout_constraintTop_toBottomOf="@id/txtMota"
         app:layout_constraintStart_toStartOf="@id/guideline0"
-        app:layout_constraintBottom_toTopOf="@id/txt01"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:srcCompat="@drawable/farmcoin" />
     <TextView
         android:id="@+id/txtDongia"
         android:text="@string/number"
         android:layout_marginStart="10dp"
         app:layout_constraintTop_toBottomOf="@id/txtMota"
-        app:layout_constraintBottom_toTopOf="@id/txt01"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/imgCoin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/txt01"
-        android:text="@string/dangco"
-        app:layout_constraintTop_toBottomOf="@id/imgCoin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guideline0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/txtSoluong"
-        android:text="@string/number"
-        android:layout_marginStart="10dp"
-        app:layout_constraintTop_toBottomOf="@id/imgCoin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/txt01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
