@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                 } finally {
-                    startActivity(new Intent(MainActivity.this,HappyFarmScreen.class));
+                    startActivity(new Intent(MainActivity.this,MainActivity2.class));
                 }
             }
         };

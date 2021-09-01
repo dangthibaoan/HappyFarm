@@ -35,6 +35,9 @@
     <string name="luca05">Lâu rồi không gặp, tôi là Luca! Ba ngày nữa tôi với người yêu đám cưới rồi, tôi muốn tự tay làm bánh cưới, nên là bạn phải gửi hàng đúng giờ cho tôi đó.</string>
     <string name="luca06">Xin chào, Luca đây! Tôi và thằng vợ vừa làm xong thủ tục nhận nuôi một bé gái, con bé tên là Krissi. Tôi muốn làm bánh cho con bé ăn. Nhớ gửi nguyên liệu đến nhà tôi sớm.</string>
     <string name="nextday">Sang ngày mới</string>
+    <string name="usn">Tên đăng nhập</string>
+    <string name="pwd">Mật khẩu</string>
+    <string name="repwd">Nhập lại mật khẩu</string>
 
 
 </resources>
