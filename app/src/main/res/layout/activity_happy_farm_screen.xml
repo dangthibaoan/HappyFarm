@@ -9,17 +9,16 @@
 
     <ImageView
         android:id="@+id/img_bg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="463dp"
+        android:layout_height="195dp"
         android:contentDescription="@string/img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/imgDhht"
         tools:srcCompat="@drawable/bg_03" />
 
     <ImageView
-        android:id="@+id/imgAvatar"
+        android:id="@+id/imgLogout"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
@@ -28,7 +27,7 @@
         app:layout_constraintHorizontal_bias="0.050"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@drawable/ic_logout" />
     <TextView
         android:id="@+id/txtUserName"
         android:layout_width="wrap_content"
@@ -38,17 +37,17 @@
         android:text="@string/name"
         android:textStyle="bold"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/imgAvatar"
+        app:layout_constraintStart_toEndOf="@+id/imgLogout"
         app:layout_constraintTop_toTopOf="parent" />
     <TextView
-        android:id="@+id/txtUID"
+        android:id="@+id/txtLvl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="@string/number"
+        android:text="@string/lvl"
         android:textStyle="bold"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/imgAvatar"
+        app:layout_constraintStart_toEndOf="@+id/imgLogout"
         app:layout_constraintTop_toBottomOf="@id/txtUserName" />
 
     <ImageView
@@ -57,7 +56,7 @@
         android:layout_height="20dp"
         android:layout_marginStart="16dp"
         android:contentDescription="@string/img"
-        app:layout_constraintTop_toBottomOf="@id/imgAvatar"
+        app:layout_constraintTop_toBottomOf="@id/imgLogout"
         app:layout_constraintStart_toStartOf="parent"
         tools:srcCompat="@drawable/farmcoin" />
     <TextView
@@ -66,28 +65,68 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         android:layout_marginStart="5dp"
-        app:layout_constraintTop_toBottomOf="@id/imgAvatar"
+        app:layout_constraintTop_toBottomOf="@id/imgLogout"
         app:layout_constraintStart_toEndOf="@+id/imgMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <ImageView
-        android:id="@+id/imgDhht"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:id="@+id/imgiconLua"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:contentDescription="@string/img"
         app:layout_constraintTop_toBottomOf="@id/imgMoney"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@drawable/order_done" />
+        tools:srcCompat="@drawable/ic_lua" />
     <TextView
-        android:id="@+id/txtSldhht"
+        android:id="@+id/txtSolgLua"
         android:text="@string/number"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:layout_marginStart="5dp"
-        app:layout_constraintTop_toBottomOf="@id/imgMoney"
-        app:layout_constraintStart_toEndOf="@+id/imgDhht"
+        app:layout_constraintBottom_toBottomOf="@id/imgiconLua"
+        app:layout_constraintStart_toEndOf="@+id/imgiconLua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/imgiconCachua"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:contentDescription="@string/img"
+        app:layout_constraintTop_toBottomOf="@id/imgiconLua"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@drawable/ic_cachua" />
+    <TextView
+        android:id="@+id/txtSolgCachua"
+        android:text="@string/number"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@id/imgiconCachua"
+        app:layout_constraintStart_toEndOf="@+id/imgiconCachua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/imgiconCarot"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:contentDescription="@string/img"
+        app:layout_constraintTop_toBottomOf="@id/imgiconCachua"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@drawable/ic_carot" />
+    <TextView
+        android:id="@+id/txtSolgCarot"
+        android:text="@string/number"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@id/imgiconCarot"
+        app:layout_constraintStart_toEndOf="@+id/imgiconCarot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -118,6 +157,7 @@
         android:id="@+id/txtStamina"
         android:text="@string/stamina_value"
         android:textColor="@color/black"
+        android:layout_marginTop="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -176,38 +216,45 @@
         tools:srcCompat="@drawable/ruongcarot" />
 
     <ImageView
-        android:id="@+id/imgStorage"
-        android:layout_width="60dp"
+        android:id="@+id/imgDat1"
+        android:layout_width="120dp"
         android:layout_height="120dp"
+        android:layout_marginTop="10dp"
         android:contentDescription="@string/img"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintTop_toBottomOf="@id/imglua"
+        app:layout_constraintEnd_toStartOf="@id/imgDat2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.369"
-        tools:srcCompat="@drawable/ic_storage" />
-
+        tools:srcCompat="@drawable/dat_unlocked" />
     <ImageView
-        android:id="@+id/imgDat"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginTop="16dp"
+        android:id="@+id/imgDat2"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="25dp"
         android:contentDescription="@string/img"
-        app:layout_constraintTop_toBottomOf="@id/imgStorage"
+        app:layout_constraintTop_toTopOf="@id/imgDat1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@drawable/dat01" />
+        app:layout_constraintStart_toEndOf="@id/imgDat1"
+        tools:srcCompat="@drawable/dat_locked" />
     <ImageView
-        android:id="@+id/imgCay"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginTop="16dp"
+        android:id="@+id/imgDat3"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="10dp"
         android:contentDescription="@string/img"
-        app:layout_constraintTop_toBottomOf="@id/imgStorage"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgDat1"
+        app:layout_constraintEnd_toStartOf="@id/imgDat2"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@drawable/lua02" />
+        tools:srcCompat="@drawable/lua03" />
+    <ImageView
+        android:id="@+id/imgDat4"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="25dp"
+        android:contentDescription="@string/img"
+        app:layout_constraintTop_toTopOf="@id/imgDat3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imgDat3"
+        tools:srcCompat="@drawable/dat_ok" />
 
     <ImageView
         android:id="@+id/imgReact"

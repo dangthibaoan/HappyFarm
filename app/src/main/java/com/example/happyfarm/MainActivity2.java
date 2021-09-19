@@ -68,7 +68,7 @@ public class MainActivity2 extends AppCompatActivity {
 
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity2.this);
-            builder.setTitle("Đăng nhập")
+            builder.setTitle("Đăng ký")
                     .setView(view2)
                     .setPositiveButton("Đăng ký", new DialogInterface.OnClickListener() {
                         @SuppressLint("ShowToast")

@@ -24,13 +24,13 @@
         android:layout_width="match_parent"
         android:layout_height="400dp" />
 
-    <Button
-        android:id="@+id/btnHistory"
-        android:layout_marginTop="30dp"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="@string/viewhistory"
-        tools:ignore="ButtonStyle" />
+<!--    <Button-->
+<!--        android:id="@+id/btnHistory"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:layout_width="150dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/viewhistory"-->
+<!--        tools:ignore="ButtonStyle" />-->
     <Button
         android:id="@+id/btnBack"
         android:layout_marginTop="30dp"
