@@ -9,11 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HappyFarm">
-        <activity android:name=".NpcOrderScreen"></activity>
-        <activity android:name=".StorageScreen" />
-        <activity android:name=".ShopScreen" />
         <activity android:name=".HappyFarmScreen" />
-        <activity android:name=".MainActivity2" />
+        <activity android:name=".LoginScreen" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

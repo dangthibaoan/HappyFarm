@@ -1,38 +1,39 @@
 package com.example.happyfarm;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.happyfarm.Model.RuongNongSan;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Objects;
 
+import static com.example.happyfarm.LoginScreen.USERID;
+
 public class HappyFarmScreen extends AppCompatActivity {
-//    int flagDat= 0;
-//    int flagCay=0;
-//    int flagTuoi=0;
-//    int flagBon=0;
-    ImageView
-        img_bg,
-        imgLogout,
-        imgCoin,
-        imgIcLua,
-        imgIcCachua,
-        imgIcCarot,
-        imgTimeSkip,
-        imgLua,
-        imgCachua,
-        imgCarot,
-        imgDat1, imgDat2, imgDat3, imgDat4,
-        imgShop,
-        imgPhanbon,
-        imgReact,
-        imgNuoc,
-        imgOrder;
+
+    RuongNongSan ruongNongSan;
+    ImageView img_bg, imgLogout, imgCoin, imgIcLua, imgIcCachua, imgIcCarot, imgTimeSkip, imgLua, imgCachua, imgCarot, imgDat1, imgDat2, imgDat3, imgDat4, imgPhanbon, imgReact, imgNuoc, imgDonhang;
+
+    GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +102,6 @@ public class HappyFarmScreen extends AppCompatActivity {
             imgReact.setImageResource(R.drawable.gieohat);
         });
 
-        imgShop = findViewById(R.id.imgShop);
-        imgShop.setImageResource(R.drawable.icon_shop);
-
         imgReact = findViewById(R.id.imgReact);
         imgReact.setImageResource(R.drawable.lamdat);
         imgReact.setOnClickListener(view -> {
@@ -163,8 +161,52 @@ public class HappyFarmScreen extends AppCompatActivity {
 //            }
         });
 
-        imgOrder = findViewById(R.id.imgOrder);
-        imgOrder.setImageResource(R.drawable.order);
+        imgDonhang = findViewById(R.id.imgOrder);
+        imgDonhang.setImageResource(R.drawable.order);
+        imgDonhang.setOnClickListener(view -> {
+
+
+
+        });
+
+    }
+
+    public void NangCapHatGiong(int ns_id){
+        int level = 0;
+        FirebaseFirestore db;
+        db = FirebaseFirestore.getInstance();
+
+        //lấy dữ liệu ruộng
+        String id = String.valueOf(ns_id);
+        db.collection("RuongNongSan").document(USERID)
+                .collection("NongSanID").document(id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                ruongNongSan = document.toObject(RuongNongSan.class);
+
+                            } else {
+                                Log.d("TAG", "No such document");
+                            }
+                        } else {
+                            Log.d("TAG", "get failed with ", task.getException());
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("TAG", "onFailure: Load data fail" + e);
+                    }
+                });
+        level = ruongNongSan.getLevelHatGiong();
+        level++;
+
 
     }
 }
