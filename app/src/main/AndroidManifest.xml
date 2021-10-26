@@ -10,6 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HappyFarm">
         <activity android:name=".HappyFarmScreen" />
+        <activity android:name=".EnterGameActivity"/>
+        <activity android:name=".ShopScreen"/>
         <activity android:name=".LoginScreen" />
         <activity android:name=".MainActivity">
             <intent-filter>

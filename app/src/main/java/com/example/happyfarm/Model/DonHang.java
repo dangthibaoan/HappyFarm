@@ -65,18 +65,6 @@ public class DonHang {
     }
 
     public void Create(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
-
-        this.Random();
-        String dh_id = String.valueOf(this.getDonHangID());
-        db.collection("DonHang").document(USERID)
-                .collection("DonHangID").document(dh_id)
-                .set(this);
-    }
-
-    //sinh thuộc tính đơn hàng ngẫu nhiên
-    public void Random(){
         if (FARMLEVEL<11){
             this.setNongSanID(1);
             this.setSoLuongMua(ThreadLocalRandom.current().nextInt(1,11));

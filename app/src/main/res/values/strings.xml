@@ -26,6 +26,7 @@
     <string name="repwd">Nhập lại mật khẩu</string>
     <string name="lvl">Level 2 (350/700)</string>
     <string name="shop">CỬA HÀNG MUA SẮM</string>
+    <string name="con_x_ngay">Còn x ngày</string>
 
 
 </resources>

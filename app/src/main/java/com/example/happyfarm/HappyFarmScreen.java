@@ -3,20 +3,16 @@ package com.example.happyfarm;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.happyfarm.Adapter.ODatAdapter;
+import com.example.happyfarm.Model.ODat;
 import com.example.happyfarm.Model.RuongNongSan;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.example.happyfarm.LoginScreen.USERID;
@@ -34,6 +31,7 @@ public class HappyFarmScreen extends AppCompatActivity {
     ImageView img_bg, imgLogout, imgCoin, imgIcLua, imgIcCachua, imgIcCarot, imgTimeSkip, imgLua, imgCachua, imgCarot, imgDat1, imgDat2, imgDat3, imgDat4, imgPhanbon, imgReact, imgNuoc, imgDonhang;
 
     GridView gridView;
+    List<ODat> oDatList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,32 +76,16 @@ public class HappyFarmScreen extends AppCompatActivity {
         imgCarot = findViewById(R.id.imgcarot);
         imgCarot.setImageResource(R.drawable.ruongcarot);
 
-        imgDat1 = findViewById(R.id.imgDat1);
-        imgDat1.setImageResource(R.drawable.dat_unlocked);
-        imgDat1.setOnClickListener(view -> {
-            imgReact.setImageResource(R.drawable.lamdat);
-        });
-
-        imgDat2 = findViewById(R.id.imgDat2);
-        imgDat2.setImageResource(R.drawable.dat_locked);
-        imgDat2.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(),"Bạn chưa mở ô đất này.", Toast.LENGTH_SHORT).show();
-        });
-
-        imgDat3 = findViewById(R.id.imgDat3);
-        imgDat3.setImageResource(R.drawable.lua03);
-        imgDat3.setOnClickListener(view -> {
-            imgReact.setImageResource(R.drawable.thuhoach);
-        });
-
-        imgDat4 = findViewById(R.id.imgDat4);
-        imgDat4.setImageResource(R.drawable.dat_ok);//ô đất đã được làm đất
-        imgDat4.setOnClickListener(view -> {
-            imgReact.setImageResource(R.drawable.gieohat);
-        });
+        gridView = findViewById(R.id.gvODat);
+        oDatList.add(1,new ODat(USERID,11,true,true,false,false,false,0, 0));
+        oDatList.add(2,new ODat(USERID,12,false,false,false,false,false,0, 0));
+        oDatList.add(3,new ODat(USERID,13,false,false,false,false,false,0, 0));
+        oDatList.add(4,new ODat(USERID,14,true,false,false,false,false,0, 0));
+        ODatAdapter oDatAdapter = new ODatAdapter(getApplicationContext(),oDatList);
+        gridView.setAdapter(oDatAdapter);
 
         imgReact = findViewById(R.id.imgReact);
-        imgReact.setImageResource(R.drawable.lamdat);
+        imgReact.setImageResource(R.drawable.react_lamdat);
         imgReact.setOnClickListener(view -> {
 //            if (flagDat == 0) {
 //                flagDat = 1;
@@ -131,7 +113,7 @@ public class HappyFarmScreen extends AppCompatActivity {
         });
 
         imgNuoc = findViewById(R.id.imgTuoinc);
-        imgNuoc.setImageResource(R.drawable.tuoinc);
+        imgNuoc.setImageResource(R.drawable.react_tuoinc);
 
         imgNuoc.setOnClickListener(view -> {
 //            if (flagDat==0){
@@ -147,7 +129,7 @@ public class HappyFarmScreen extends AppCompatActivity {
         });
 
         imgPhanbon = findViewById(R.id.imgBonphan);
-        imgPhanbon.setImageResource(R.drawable.bonphan);
+        imgPhanbon.setImageResource(R.drawable.react_bonphan);
         imgPhanbon.setOnClickListener(view -> {
 //            if (flagDat==0){
 //                Toast.makeText(getApplicationContext(),"Bạn chưa làm đất!", Toast.LENGTH_LONG).show();
@@ -162,7 +144,7 @@ public class HappyFarmScreen extends AppCompatActivity {
         });
 
         imgDonhang = findViewById(R.id.imgOrder);
-        imgDonhang.setImageResource(R.drawable.order);
+        imgDonhang.setImageResource(R.drawable.icon_order);
         imgDonhang.setOnClickListener(view -> {
 
 

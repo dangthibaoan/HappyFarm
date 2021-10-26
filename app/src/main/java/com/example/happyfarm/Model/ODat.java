@@ -1,7 +1,6 @@
 package com.example.happyfarm.Model;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -15,7 +14,7 @@ import static com.example.happyfarm.LoginScreen.FARMCOIN;
 import static com.example.happyfarm.LoginScreen.LUA;
 import static com.example.happyfarm.LoginScreen.STAMINA;
 import static com.example.happyfarm.LoginScreen.USERID;
-import static com.example.happyfarm.WaitActivity.O_DAT_UNLOCKED;
+import static com.example.happyfarm.EnterGameActivity.O_DAT_UNLOCKED;
 
 public class ODat {
     private String uID;         //uid của player
@@ -30,7 +29,6 @@ public class ODat {
 
     public ODat() { }
 
-    //dùng để xử lý dữ liệu lên database lúc khởi tạo tài khoản mới
     public ODat(String uID,
                 int oDatID,
                 boolean moKhoa,
@@ -125,9 +123,6 @@ public class ODat {
     }
 
     public void Create(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
-
         this.setuID(USERID);
         this.setMoKhoa(false);
         this.setLamDat(false);
@@ -136,30 +131,15 @@ public class ODat {
         this.setBonPhan(false);
         this.setSoNgayThuHoach(0);
         this.setSanLuongThuHoach(0);
-
-        String od_id = String.valueOf(this.getoDatID());
-        db.collection("ODat").document(USERID)
-                .collection("ODatID").document(od_id)
-                .set(this)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("TAG", "onSuccess: Add success");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", "onFailure: " + e.getMessage());
-                    }
-                });
     }
 
+    //chuyển các lệnh db sang HappyFarmScreen
     //mở khóa ô đất với điều kiện farmcoin hiện có > farmcoin tiêu hao
     public void MoKhoa(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
+        this.setMoKhoa(true);
+    }
 
+    public void Mo_Khoa(FirebaseFirestore db){
         String od_id = String.valueOf(this.getoDatID());
         int od_id_ = this.getoDatID();
         db.collection("ODat").document(USERID)
@@ -182,8 +162,11 @@ public class ODat {
 
     //làm đất với điều kiện moKhoa=true, các thuộc tính còn lại = false
     public void LamDat(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
+        this.setLamDat(true);
+    }
+    public void LamDat(FirebaseFirestore db){
+//        FirebaseFirestore db;
+//        db = FirebaseFirestore.getInstance();
 
         String od_id = String.valueOf(this.getoDatID());
         db.collection("ODat").document(USERID)
@@ -205,8 +188,11 @@ public class ODat {
     }
 
     public void GieoHat(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
+        this.setGieoHat(true);
+    }
+    public void GieoHat(FirebaseFirestore db){
+//        FirebaseFirestore db;
+//        db = FirebaseFirestore.getInstance();
 
         String od_id = String.valueOf(this.getoDatID());
         db.collection("ODat").document(USERID)
@@ -228,8 +214,11 @@ public class ODat {
     }
 
     public void TuoiNuoc(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
+        this.setTuoiNuoc(true);
+    }
+    public void TuoiNuoc(FirebaseFirestore db){
+//        FirebaseFirestore db;
+//        db = FirebaseFirestore.getInstance();
 
         int sanLuongMoi = this.getSanLuongThuHoach(); //thiếu công thức tính sản lượng sau khi tưới nước
         String od_id = String.valueOf(this.getoDatID());
@@ -253,8 +242,11 @@ public class ODat {
     }
 
     public void BonPhan(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
+        this.setBonPhan(true);
+    }
+    public void BonPhan(FirebaseFirestore db){
+//        FirebaseFirestore db;
+//        db = FirebaseFirestore.getInstance();
 
         String od_id = String.valueOf(this.getoDatID());
         db.collection("ODat").document(USERID)
@@ -276,8 +268,11 @@ public class ODat {
     }
 
     public void ThuHoach(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
+
+    }
+    public void ThuHoach(FirebaseFirestore db){
+//        FirebaseFirestore db;
+//        db = FirebaseFirestore.getInstance();
 
         int id = this.getoDatID();
         int sanluong = this.getSanLuongThuHoach();

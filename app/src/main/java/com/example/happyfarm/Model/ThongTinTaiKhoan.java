@@ -1,14 +1,5 @@
 package com.example.happyfarm.Model;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import static com.example.happyfarm.LoginScreen.USERID;
 
 public class ThongTinTaiKhoan {
@@ -21,22 +12,6 @@ public class ThongTinTaiKhoan {
     private int tongSoLuongCaRot;
 
     public ThongTinTaiKhoan(){}
-
-    public ThongTinTaiKhoan(String uID,
-                            int tongTienNongTrai,
-                            int expLevel,
-                            int giaTriTheLuc,
-                            int tongSoLuongLua,
-                            int tongSoluongCachua,
-                            int tongSoLuongCaRot) {
-        this.uID = uID;
-        this.tongTienNongTrai = tongTienNongTrai;
-        this.expLevel = expLevel;
-        this.giaTriTheLuc = giaTriTheLuc;
-        this.tongSoLuongLua = tongSoLuongLua;
-        this.tongSoluongCachua = tongSoluongCachua;
-        this.tongSoLuongCaRot = tongSoLuongCaRot;
-    }
 
     public int getTongTienNongTrai() {
         return tongTienNongTrai;
@@ -95,28 +70,16 @@ public class ThongTinTaiKhoan {
     }
 
     public void Create(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
-
-        db.collection("ThongTinNongTrai")
-                .add(this)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("TAG", "DocumentSnapshot written with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("TAG", "Error adding document", e);
-                    }
-                });
+        this.setTongTienNongTrai(0);
+        this.setExpLevel(0);
+        this.setGiaTriTheLuc(100);
+        this.setTongSoLuongLua(0);
+        this.setTongSoluongCachua(0);
+        this.setTongSoLuongCaRot(0);
     }
 
-    public void Update(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
+   /* public void Update(){
+
 
         db.collection("ThongTinNongTrai")
                 .document(USERID)
@@ -138,5 +101,5 @@ public class ThongTinTaiKhoan {
                         Log.d("TAG", "onFailure: " + e.getMessage());
                     }
                 });
-    }
+    }*/
 }

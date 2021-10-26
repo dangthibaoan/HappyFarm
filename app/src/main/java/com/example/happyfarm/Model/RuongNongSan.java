@@ -73,31 +73,10 @@ public class RuongNongSan {
         this.sanLuongThuHoach = sanLuongThuHoach;
     }
 
-    public void Create(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
-
-        String ns_id = String.valueOf(this.getNongSanID());
-        db.collection("RuongNongSan").document(USERID)
-                .collection("NongSanID").document(ns_id)
-                .set(this)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("TAG", "onSuccess: Add success");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", "onFailure: " + e.getMessage());
-                    }
-                });
-    }
-
-    public void Update(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
+    /*
+    public void Update(FirebaseFirestore db){
+//        FirebaseFirestore db;
+//        db = FirebaseFirestore.getInstance();
 
         String ns_id = String.valueOf(this.getNongSanID());
         db.collection("RuongNongSan").document(USERID)
@@ -116,5 +95,5 @@ public class RuongNongSan {
                         Log.d("TAG", "onFailure: " + e.getMessage());
                     }
                 });
-    }
+    }*/
 }

@@ -13,7 +13,7 @@ import static com.example.happyfarm.LoginScreen.USERID;
 public class SanPham {
     private String uid;
     private int sanPhamID;
-    private String tenSanPham;          //hạt giống cấp n, nước thần x2 sản lượng thu hoạch, nước tăng lực +50 giá trị thể lực
+    private String tenSanPham;          //hạt giống cấp n, nước tăng lực +50 giá trị thể lực
     private String anhMinhHoa;
     private String moTaSanPham;
     private int donGia;
@@ -87,31 +87,9 @@ public class SanPham {
         this.trangThaiSanPham = trangThaiSanPham;
     }
 
-    public void Create(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
-
-        String sp_id = String.valueOf(this.getSanPhamID());
-        db.collection("Shop").document(USERID)
-                .collection("SanPhamID").document(sp_id)
-                .set(this)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("TAG", "onSuccess: Add success");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", "onFailure: " + e.getMessage());
-                    }
-                });
-    }
-
-    public void Mua(){
-        FirebaseFirestore db;
-        db = FirebaseFirestore.getInstance();
+    public void Mua(FirebaseFirestore db){
+//        FirebaseFirestore db;
+//        db = FirebaseFirestore.getInstance();
 
         String sp_id = String.valueOf(this.getSanPhamID());
         db.collection("Shop").document(USERID)

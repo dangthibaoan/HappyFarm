@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.happyfarm.Model.DonHang;
+import com.example.happyfarm.Model.ODat;
 import com.example.happyfarm.R;
 
 import java.util.List;
@@ -17,6 +18,11 @@ import java.util.List;
 public class DonHangAdapter extends BaseAdapter {
     Context context;
     List<DonHang> list;
+
+    public DonHangAdapter(Context context, List<DonHang> list) {
+        this.context = context;
+        this.list = list;
+    }
 
     @Override
     public int getCount() {
