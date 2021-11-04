@@ -78,19 +78,16 @@ public class EnterGameActivity extends AppCompatActivity {
             RuongNongSan ns_lua = new RuongNongSan(USERID,1,1,5,10);
             String ns_lua_id = String.valueOf(ns_lua.getNongSanID());
             db.collection("RuongNongSan").document(USERID)
-                    .collection("NongSanID").document(ns_lua_id)
                     .set(ns_lua);
 
             RuongNongSan ns_cachua = new RuongNongSan(USERID,2,1,7,11);
             String ns_cachua_id = String.valueOf(ns_lua.getNongSanID());
             db.collection("RuongNongSan").document(USERID)
-                    .collection("NongSanID").document(ns_cachua_id)
                     .set(ns_cachua);
 
             RuongNongSan ns_carot = new RuongNongSan(USERID,3,1,9,12);
             String ns_carot_id = String.valueOf(ns_lua.getNongSanID());
             db.collection("RuongNongSan").document(USERID)
-                    .collection("NongSanID").document(ns_carot_id)
                     .set(ns_carot);
 
             //đưa dữ liệu ô đất lên firestore
@@ -176,21 +173,21 @@ public class EnterGameActivity extends AppCompatActivity {
         }
         else {
             soODatUnlocked();
-            db.collection("ThongTinNongTrai").whereEqualTo("uID",USERID)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                //noinspection ConstantConditions
-                                for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                                    O_DAT_UNLOCKED++;
-                                }
-                            } else {
-                                Log.d("TAG", "onComplete: Load data error " + task.getException());
-                            }
-                        }
-                    });
+//            db.collection("ThongTinNongTrai").whereEqualTo("uID",USERID)
+//                    .get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                //noinspection ConstantConditions
+//                                for (QueryDocumentSnapshot snapshot : task.getResult()) {
+//                                    O_DAT_UNLOCKED++;
+//                                }
+//                            } else {
+//                                Log.d("TAG", "onComplete: Load data error " + task.getException());
+//                            }
+//                        }
+//                    });
             startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
         }
     }
@@ -206,6 +203,7 @@ public class EnterGameActivity extends AppCompatActivity {
 
     public void soODatUnlocked(){
          O_DAT_UNLOCKED=0;
+         db = FirebaseFirestore.getInstance();
          db.collection("ODat").document(USERID)
                  .collection("ODatID").whereEqualTo("moKhoa",true)
                  .get()

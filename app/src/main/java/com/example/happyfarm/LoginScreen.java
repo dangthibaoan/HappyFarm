@@ -43,7 +43,16 @@ public class LoginScreen extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.login_screen);
+
+        //loginStatus=false;
+
         db = FirebaseFirestore.getInstance();
+
+        TaiKhoan tk = new TaiKhoan();
+        tk.Register("an","123");
+        db.collection("User")
+                .add(tk);
+
 
         btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this::onClick2);
@@ -53,6 +62,7 @@ public class LoginScreen extends AppCompatActivity {
 
     }
 
+    //Đăng ký
     private void onClick(View view) {
         LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View view2 = inflater.inflate(R.layout.dialog_register_screen, null);
@@ -106,18 +116,13 @@ public class LoginScreen extends AppCompatActivity {
     private int kiemTra(String usn){
         kq=0;
         db = FirebaseFirestore.getInstance();
-        db.collection("User").whereEqualTo("usn",usn)
+        db.collection("User")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
-                            TaiKhoan user = snapshot.toObject(TaiKhoan.class);
-                            if (usn.equals(user.getUsn())) {
-                                kq=1;
-                                break;
-                            }
+                            if (snapshot.get("usn")==usn) kq=1;
                         }
-                        kq=0;
                     } else {
                         Log.d("Register", "onComplete: Load data error " + task.getException());
                     }
@@ -125,6 +130,7 @@ public class LoginScreen extends AppCompatActivity {
         return kq;
     }
 
+    //đăng nhập
     private void onClick2(View view) {
         LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View view1 = inflater.inflate(R.layout.dialog_login_screen, null);
@@ -153,13 +159,12 @@ public class LoginScreen extends AppCompatActivity {
                                             btnLogin.setEnabled(true);
                                             USERID = user.getUid();
                                             USERNAME = user.getUsn();
-                                            break;
-                                        }
+                                        } else
+                                            loginStatus=false;
                                     }
-                                    if (!loginStatus) {
-                                        btnLogin.setEnabled(true);
-                                        Toast.makeText(getApplicationContext(),"Sai tên đăng nhập hoặc mật khẩu!",Toast.LENGTH_SHORT).show();
-                                    } else {
+                                    if (!loginStatus)
+                                        Toast.makeText(getApplicationContext(), "Sai tên đăng nhập hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+                                    else {
                                         Toast.makeText(getApplicationContext(),"Chào mừng "+USERNAME +" đăng nhập!",Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(LoginScreen.this, EnterGameActivity.class);
                                         intent.putExtra("flag",true);
@@ -174,5 +179,6 @@ public class LoginScreen extends AppCompatActivity {
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
         dialog.show();
+
     }
 }

@@ -65,15 +65,15 @@ public class DonHang {
     }
 
     public void Create(){
-        if (FARMLEVEL<11){
+        if (FARMLEVEL<4){
             this.setNongSanID(1);
             this.setSoLuongMua(ThreadLocalRandom.current().nextInt(1,11));
             this.setTienHang(this.getSoLuongMua()*5);
-        } else if (FARMLEVEL < 21){
+        } else if (FARMLEVEL < 11){
             this.setNongSanID(ThreadLocalRandom.current().nextInt(1,3));
             this.setSoLuongMua(ThreadLocalRandom.current().nextInt(10,50));
             this.setTienHang(this.getSoLuongMua()*6);
-        } else if (FARMLEVEL < 31){
+        } else if (FARMLEVEL < 21){
             this.setNongSanID(ThreadLocalRandom.current().nextInt(1,4));
             this.setSoLuongMua(ThreadLocalRandom.current().nextInt(40,100));
             this.setTienHang(this.getSoLuongMua()*7);
