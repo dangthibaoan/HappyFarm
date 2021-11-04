@@ -33,7 +33,7 @@ public class TaiKhoan {
     }
 
     public void Register(String usn, String pwd){
-        this.setUid(System.currentTimeMillis() +usn);
+        this.setUid(System.currentTimeMillis() + usn);
         this.setUsn(usn);
         this.setPwd(pwd);
     }

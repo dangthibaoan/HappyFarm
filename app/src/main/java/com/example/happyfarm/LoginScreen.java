@@ -49,7 +49,7 @@ public class LoginScreen extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         TaiKhoan tk = new TaiKhoan();
-        tk.Register("an","123");
+        tk.Register(System.currentTimeMillis()%1000 +"an","123");
         db.collection("User")
                 .add(tk);
 
