@@ -72,7 +72,7 @@ public class ThongTinTaiKhoan {
     public void Create(){
         this.setTongTienNongTrai(0);
         this.setExpLevel(0);
-        this.setGiaTriTheLuc(100);
+        this.setGiaTriTheLuc(150);
         this.setTongSoLuongLua(0);
         this.setTongSoluongCachua(0);
         this.setTongSoLuongCaRot(0);

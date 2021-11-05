@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,10 +30,8 @@ public class LoginScreen extends AppCompatActivity {
     Button btnLogin, btnReg;
     EditText usn, pwd, repwd;
     FirebaseFirestore db;
-    int kq;
     Boolean loginStatus;
-
-    //Thread thread1, thread2, thread3;
+    int kq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,141 +43,123 @@ public class LoginScreen extends AppCompatActivity {
 
         setContentView(R.layout.login_screen);
 
-        //loginStatus=false;
-
-        db = FirebaseFirestore.getInstance();
-
-        TaiKhoan tk = new TaiKhoan();
-        tk.Register(System.currentTimeMillis()%1000 +"an","123");
-        db.collection("User")
-                .add(tk);
-
-
-        btnLogin = findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(this::onClick2);
 
         btnReg = findViewById(R.id.btnRegister);
-        btnReg.setOnClickListener(this::onClick);
+        btnLogin = findViewById(R.id.btnLogin);
 
-    }
+        btnReg.setOnClickListener(v -> {
+            LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            @SuppressLint("InflateParams") View view2 = inflater.inflate(R.layout.dialog_register_screen, null);
+            //.....................
+            usn = view2.findViewById(R.id.edtUsername);
+            pwd = view2.findViewById(R.id.edtPass);
+            repwd = view2.findViewById(R.id.edtRePass);
 
-    //Đăng ký
-    private void onClick(View view) {
-        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("InflateParams") View view2 = inflater.inflate(R.layout.dialog_register_screen, null);
-        //.....................
-        usn = view2.findViewById(R.id.edtUsername);
-        pwd = view2.findViewById(R.id.edtPass);
-        repwd = view2.findViewById(R.id.edtRePass);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(LoginScreen.this);
-        builder.setTitle("Đăng ký")
-                .setView(view2)
-                .setPositiveButton("Đăng ký", (dialog, which) -> {
-                    //demo
-                    String loginName = usn.getText().toString().trim();
-                    String pass = pwd.getText().toString().trim();
-                    String rePass = repwd.getText().toString().trim();
-                    if (!rePass.equals(pass)) {
-                        Toast.makeText(getApplicationContext(),"Mật khẩu nhập lại không đúng.", Toast.LENGTH_LONG).show();
-                    } else if (kiemTra(loginName)==0) {
-                        TaiKhoan accDemo = new TaiKhoan();
-                        accDemo.Register(loginName,pass);
-                        //đưa acc lên firestore
+            Builder builder = new Builder(LoginScreen.this);
+            builder.setTitle("Đăng ký")
+                    .setView(view2)
+                    .setPositiveButton("Đăng ký", (dialog, which) -> {
+                        String loginName = usn.getText().toString().trim();
+                        String pass = pwd.getText().toString().trim();
+                        String rePass = repwd.getText().toString().trim();
                         db = FirebaseFirestore.getInstance();
-                        db.collection("User").document(accDemo.getUid())
-                                .set(accDemo)
-                                .addOnSuccessListener(aVoid -> {
-                                    USERID = accDemo.getUid();
-                                    Toast.makeText(getApplicationContext(), "Đăng ký acc thành công!", Toast.LENGTH_SHORT).show();
-                                    Log.d("TAG", "onSuccess: Add food success");
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(getApplicationContext(), "Đăng ký acc thất bại!", Toast.LENGTH_SHORT).show();
-                                    Log.d("TAG", "onFailure: Add food error " + e);
+                        db.collection("User").whereEqualTo("usn", loginName)
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        kq=0;
+                                        for (QueryDocumentSnapshot ignored : Objects.requireNonNull(task.getResult()))
+                                            kq = 1;
+                                        if (kq==1) Toast.makeText(getApplicationContext(),"Tên đăng nhập đã tồn tại.", Toast.LENGTH_LONG).show();
+                                        else doRegister(loginName, pass, rePass);
+                                    } else {
+                                        Log.d("Register", "onComplete: Load data error " + task.getException());
+                                    }
                                 });
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
 
-                        if (USERID.equals(accDemo.getUid())){
-                            Intent intent = new Intent(LoginScreen.this, EnterGameActivity.class);
-                            intent.putExtra("flag",false);
-                            startActivity(intent);
-                        }
-                    } else {
-                        Toast.makeText(getApplicationContext(),"Tên đăng nhập đã tồn tại.", Toast.LENGTH_LONG).show();
-                    }
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        btnLogin.setOnClickListener(v -> {
+            LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            @SuppressLint("InflateParams") View view1 = inflater.inflate(R.layout.dialog_login_screen, null);
+            //.....................
+
+            usn = view1.findViewById(R.id.edtUsername);
+            pwd = view1.findViewById(R.id.edtPass);
+
+            Builder builder = new Builder(LoginScreen.this);
+            builder.setTitle("Đăng nhập")
+                    .setView(view1)
+                    .setPositiveButton("Đăng nhập", (dialog, which) -> {
+                        //demo
+                        String loginName = usn.getText().toString().trim();
+                        String pass = pwd.getText().toString().trim();
+                        doLogin(loginName,pass);
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
     }
 
-    //vẫn crash =.=
-    private int kiemTra(String usn){
-        kq=0;
+    public void doRegister(String loginName, String pass, String rePass){
+        if (!rePass.equals(pass)) {
+            Toast.makeText(getApplicationContext(),"Mật khẩu nhập lại không đúng.", Toast.LENGTH_LONG).show();
+        }
+        else {
+            TaiKhoan accDemo = new TaiKhoan();
+            accDemo.Register(loginName,pass);
+            //đưa acc lên firestore
+            db = FirebaseFirestore.getInstance();
+            db.collection("User").document(accDemo.getUid())
+                    .set(accDemo)
+                    .addOnSuccessListener(aVoid -> {
+                        USERID = accDemo.getUid();
+                        Toast.makeText(getApplicationContext(), "Đăng ký acc thành công!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginScreen.this, EnterGameActivity.class);
+                        intent.putExtra("flag","Reg");
+                        startActivity(intent);
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(getApplicationContext(),"Đăng ký acc thất bại.", Toast.LENGTH_LONG).show();
+                        Log.d("TAG", "onFailure: Add food error " + e);
+                    });
+        }
+    }
+
+    //đăng nhập
+    private void doLogin(String loginName, String pass) {
         db = FirebaseFirestore.getInstance();
         db.collection("User")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
-                            if (snapshot.get("usn")==usn) kq=1;
+                            TaiKhoan user = snapshot.toObject(TaiKhoan.class);
+                            if (loginName.equals(user.getUsn()) && pass.equals(user.getPwd())){
+                                loginStatus=true;
+                                btnLogin.setEnabled(true);
+                                USERID = user.getUid();
+                                USERNAME = user.getUsn();
+                            } else
+                                loginStatus=false;
+                        }
+                        if (!loginStatus)
+                            Toast.makeText(getApplicationContext(), "Sai tên đăng nhập hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(getApplicationContext(),"Chào mừng "+USERNAME +" đăng nhập!",Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginScreen.this, EnterGameActivity.class);
+                            intent.putExtra("flag","Login");
+                            startActivity(intent);
                         }
                     } else {
-                        Log.d("Register", "onComplete: Load data error " + task.getException());
+                        Toast.makeText(getApplicationContext(), "Lỗi!", Toast.LENGTH_SHORT).show();
+                        Log.d("Login", "onComplete: Load data error " + task.getException());
                     }
                 });
-        return kq;
-    }
-
-    //đăng nhập
-    private void onClick2(View view) {
-        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("InflateParams") View view1 = inflater.inflate(R.layout.dialog_login_screen, null);
-        //.....................
-
-        usn = view1.findViewById(R.id.edtUsername);
-        pwd = view1.findViewById(R.id.edtPass);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(LoginScreen.this);
-        builder.setTitle("Đăng nhập")
-                .setView(view1)
-                .setPositiveButton("Đăng nhập", (dialog, which) -> {
-                    //demo
-                    String loginName = usn.getText().toString().trim();
-                    String pass = pwd.getText().toString().trim();
-
-                    db = FirebaseFirestore.getInstance();
-                    db.collection("User")
-                            .get()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
-                                        TaiKhoan user = snapshot.toObject(TaiKhoan.class);
-                                        if (loginName.equals(user.getUsn()) && pass.equals(user.getPwd())){
-                                            loginStatus=true;
-                                            btnLogin.setEnabled(true);
-                                            USERID = user.getUid();
-                                            USERNAME = user.getUsn();
-                                        } else
-                                            loginStatus=false;
-                                    }
-                                    if (!loginStatus)
-                                        Toast.makeText(getApplicationContext(), "Sai tên đăng nhập hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
-                                    else {
-                                        Toast.makeText(getApplicationContext(),"Chào mừng "+USERNAME +" đăng nhập!",Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(LoginScreen.this, EnterGameActivity.class);
-                                        intent.putExtra("flag",true);
-                                        startActivity(intent);
-                                    }
-                                } else {
-                                    Log.d("Login", "onComplete: Load data error " + task.getException());
-                                }
-                            });
-
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-        AlertDialog dialog = builder.create();
-        dialog.show();
 
     }
 }
