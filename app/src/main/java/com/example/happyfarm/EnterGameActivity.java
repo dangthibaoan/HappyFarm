@@ -2,7 +2,11 @@ package com.example.happyfarm;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -16,6 +20,7 @@ import com.example.happyfarm.Model.SanPham;
 import com.example.happyfarm.Model.ThongTinTaiKhoan;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 import static com.example.happyfarm.LoginScreen.CACHUA;
@@ -122,9 +127,10 @@ public class EnterGameActivity extends AppCompatActivity {
                 db = FirebaseFirestore.getInstance();
                 RuongNongSan ns_lua = new RuongNongSan(USERID,1,1,5,10);
 //                String ns_lua_id = String.valueOf(ns_lua.getNongSanID());
-                db.collection("RuongNongSan")
-                        .add(ns_lua)
-                        .addOnSuccessListener(documentReference -> {
+                db.collection("RuongNongSan").document(USERID)
+                        .collection("NongSanID").document(String.valueOf(ns_lua.getNongSanID()))
+                        .set(ns_lua)
+                        .addOnSuccessListener(unused -> {
                             process+=7;
                             tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
                             if (process==100){
@@ -134,9 +140,10 @@ public class EnterGameActivity extends AppCompatActivity {
 
                 RuongNongSan ns_cachua = new RuongNongSan(USERID,2,1,7,11);
 //                String ns_cachua_id = String.valueOf(ns_lua.getNongSanID());
-                db.collection("RuongNongSan")
-                        .add(ns_cachua)
-                        .addOnSuccessListener(documentReference -> {
+                db.collection("RuongNongSan").document(USERID)
+                        .collection("NongSanID").document(String.valueOf(ns_cachua.getNongSanID()))
+                        .set(ns_cachua)
+                        .addOnSuccessListener(unused -> {
                             process+=7;
                             tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
                             if (process==100){
@@ -146,9 +153,10 @@ public class EnterGameActivity extends AppCompatActivity {
 
                 RuongNongSan ns_carot = new RuongNongSan(USERID,3,1,9,12);
 //                String ns_carot_id = String.valueOf(ns_lua.getNongSanID());
-                db.collection("RuongNongSan")
-                        .add(ns_carot)
-                        .addOnSuccessListener(documentReference -> {
+                db.collection("RuongNongSan").document(USERID)
+                        .collection("NongSanID").document(String.valueOf(ns_carot.getNongSanID()))
+                        .set(ns_carot)
+                        .addOnSuccessListener(unused -> {
                             process+=7;
                             tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
                             if (process==100){
@@ -243,7 +251,7 @@ public class EnterGameActivity extends AppCompatActivity {
             public void run() {
                 db = FirebaseFirestore.getInstance();
                 for (int sp=1; sp<6; sp++) {
-                    SanPham sp_lua = new SanPham(USERID, 10 + sp, "Hạt lúa giống cấp " + sp, "", "Nâng sản lượng thu hoạch lúa từ " + 10 * (sp - 1) + " lên " + 10 * sp, 20 * sp, false);
+                    SanPham sp_lua = new SanPham(USERID, 10 + sp, "Hạt lúa giống cấp " + sp, "img_lua", "Nâng sản lượng thu hoạch lúa từ " + 10 * (sp - 1) + " lên " + 10 * sp, 20 * sp, false);
                     String sp_id = String.valueOf(sp_lua.getSanPhamID());
                     db.collection("Shop").document(USERID)
                             .collection("SanPhamID").document(sp_id)
@@ -256,7 +264,7 @@ public class EnterGameActivity extends AppCompatActivity {
                                 }
                             });
 
-                    SanPham sp_cachua = new SanPham(USERID, 20 + sp, "Hạt cà chua giống cấp " + sp, "", "Nâng sản lượng thu hoạch cà chua từ " + 11 * (sp - 1) + " lên " + 11 * sp, 25 * sp, false);
+                    SanPham sp_cachua = new SanPham(USERID, 20 + sp, "Hạt cà chua giống cấp " + sp, "img_cachua", "Nâng sản lượng thu hoạch cà chua từ " + 11 * (sp - 1) + " lên " + 11 * sp, 25 * sp, false);
                     sp_id = String.valueOf(sp_cachua.getSanPhamID());
                     db.collection("Shop").document(USERID)
                             .collection("SanPhamID").document(sp_id)
@@ -269,7 +277,7 @@ public class EnterGameActivity extends AppCompatActivity {
                                 }
                             });
 
-                    SanPham sp_carot = new SanPham(USERID, 30 + sp, "Hạt cà rốt giống cấp " + sp, "", "Nâng sản lượng thu hoạch cà rốt từ " + 12 * (sp - 1) + " lên " + 12 * sp, 20 * sp, false);
+                    SanPham sp_carot = new SanPham(USERID, 30 + sp, "Hạt cà rốt giống cấp " + sp, "img_carot", "Nâng sản lượng thu hoạch cà rốt từ " + 12 * (sp - 1) + " lên " + 12 * sp, 20 * sp, false);
                     sp_id = String.valueOf(sp_carot.getSanPhamID());
                     db.collection("Shop").document(USERID)
                             .collection("SanPhamID").document(sp_id)

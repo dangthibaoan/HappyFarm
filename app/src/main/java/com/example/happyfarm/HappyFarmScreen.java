@@ -7,12 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.example.happyfarm.Adapter.ODatAdapter;
-import com.example.happyfarm.Model.ODat;
 import com.example.happyfarm.Model.RuongNongSan;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -20,7 +17,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.example.happyfarm.LoginScreen.USERID;
@@ -28,10 +24,11 @@ import static com.example.happyfarm.LoginScreen.USERID;
 public class HappyFarmScreen extends AppCompatActivity {
 
     RuongNongSan ruongNongSan;
-    ImageView img_bg, imgLogout, imgCoin, imgIcLua, imgIcCachua, imgIcCarot, imgTimeSkip, imgLua, imgCachua, imgCarot, imgDat1, imgDat2, imgDat3, imgDat4, imgPhanbon, imgReact, imgNuoc, imgDonhang;
 
-    GridView gridView;
-    List<ODat> oDatList;
+    ImageView img_bg, imgLogout, imgCoin, imgIcLua, imgIcCachua, imgIcCarot, imgTimeSkip, imgLua, imgCachua, imgCarot, imgDat1, imgDat2, imgDat3, imgDat4, imgPhanbon, imgReact, imgNuoc, imgShop, imgDonhang;
+    TextView txtUsn, txtLvl, txtMoney, txtLua, txtCachua, txtCarot, txtStaVal;
+
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +39,8 @@ public class HappyFarmScreen extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_happy_farm_screen);
+
+        db = FirebaseFirestore.getInstance();
 
         img_bg = findViewById(R.id.img_bg);
         img_bg.setImageResource(R.drawable.bg_03);
@@ -76,13 +75,30 @@ public class HappyFarmScreen extends AppCompatActivity {
         imgCarot = findViewById(R.id.imgcarot);
         imgCarot.setImageResource(R.drawable.ruongcarot);
 
-        gridView = findViewById(R.id.gvODat);
-        oDatList.add(1,new ODat(USERID,11,true,true,false,false,false,0, 0));
-        oDatList.add(2,new ODat(USERID,12,false,false,false,false,false,0, 0));
-        oDatList.add(3,new ODat(USERID,13,false,false,false,false,false,0, 0));
-        oDatList.add(4,new ODat(USERID,14,true,false,false,false,false,0, 0));
-        ODatAdapter oDatAdapter = new ODatAdapter(getApplicationContext(),oDatList);
-        gridView.setAdapter(oDatAdapter);
+        imgDat1 = findViewById(R.id.imgDat1);
+        imgDat1.setImageResource(R.drawable.dat_locked);
+        imgDat1.setOnClickListener(view -> {
+
+        });
+
+        imgDat2 = findViewById(R.id.imgDat2);
+        imgDat2.setImageResource(R.drawable.dat_locked);
+        imgDat2.setOnClickListener(view -> {
+
+        });
+
+        imgDat3 = findViewById(R.id.imgDat3);
+        imgDat3.setImageResource(R.drawable.dat_locked);
+        imgDat3.setOnClickListener(view -> {
+
+        });
+
+        imgDat4 = findViewById(R.id.imgDat4);
+        imgDat4.setImageResource(R.drawable.dat_locked);
+        imgDat4.setOnClickListener(view -> {
+
+        });
+
 
         imgReact = findViewById(R.id.imgReact);
         imgReact.setImageResource(R.drawable.react_lamdat);
@@ -147,9 +163,15 @@ public class HappyFarmScreen extends AppCompatActivity {
         imgDonhang.setImageResource(R.drawable.icon_order);
         imgDonhang.setOnClickListener(view -> {
 
+        });
 
+
+        imgShop = findViewById(R.id.imgShop);
+        imgShop.setImageResource(R.drawable.icon_shop);
+        imgShop.setOnClickListener(view -> {
 
         });
+
 
     }
 

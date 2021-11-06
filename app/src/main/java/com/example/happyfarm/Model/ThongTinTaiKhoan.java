@@ -1,7 +1,5 @@
 package com.example.happyfarm.Model;
 
-import static com.example.happyfarm.LoginScreen.USERID;
-
 public class ThongTinTaiKhoan {
     private String uID;
     private int tongTienNongTrai;

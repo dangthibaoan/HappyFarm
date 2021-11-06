@@ -52,7 +52,7 @@ public class DonHangAdapter extends BaseAdapter {
                 imgNongsan.setImageResource(R.drawable.ic_lua);
                 break;
             case 2:
-                imgNongsan.setImageResource(R.drawable.ic_lua);
+                imgNongsan.setImageResource(R.drawable.ic_cachua);
                 break;
             case 3:
                 imgNongsan.setImageResource(R.drawable.ic_carot);
