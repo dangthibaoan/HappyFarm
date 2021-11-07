@@ -2,15 +2,14 @@ package com.example.happyfarm;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Base64;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.happyfarm.Model.DonHang;
@@ -18,15 +17,20 @@ import com.example.happyfarm.Model.ODat;
 import com.example.happyfarm.Model.RuongNongSan;
 import com.example.happyfarm.Model.SanPham;
 import com.example.happyfarm.Model.ThongTinTaiKhoan;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
-import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 import static com.example.happyfarm.LoginScreen.CACHUA;
 import static com.example.happyfarm.LoginScreen.CAROT;
 import static com.example.happyfarm.LoginScreen.FARMCOIN;
-import static com.example.happyfarm.LoginScreen.FARMLEVEL;
+import static com.example.happyfarm.LoginScreen.FARMEXP;
 import static com.example.happyfarm.LoginScreen.LUA;
 import static com.example.happyfarm.LoginScreen.STAMINA;
 import static com.example.happyfarm.LoginScreen.USERID;
@@ -39,7 +43,7 @@ public class EnterGameActivity extends AppCompatActivity {
     FirebaseFirestore db;
     TextView tv1, tv2;
     String flag;
-    int process=0;
+    int process;
 
     @SuppressLint("DefaultLocale")
     @Override
@@ -63,39 +67,21 @@ public class EnterGameActivity extends AppCompatActivity {
         if (flag.equals("Login")) getData();
     }
 
-    private void setUp(int fCoin, int exp, int sta, int lua, int cachua, int carot){
+    public static void setUp(int fCoin, int exp, int sta, int lua, int cachua, int carot){
         FARMCOIN = fCoin;
-        FARMLEVEL = (int) (log((exp / 100) + 1) / log(2));
+        FARMEXP = exp;
+        double kq = (log((exp / 100) + 1) / log(2));
+        LoginScreen.FARMLEVEL = (int) kq;
         STAMINA = sta;
         LUA = lua;
         CACHUA = cachua;
         CAROT = carot;
     }
 
-    // public void soODatUnlocked(){
-    //      O_DAT_UNLOCKED=0;
-    //      db = FirebaseFirestore.getInstance();
-    //      db.collection("ODat").document(USERID)
-    //              .collection("ODatID").whereEqualTo("moKhoa",true)
-    //              .get()
-    //              .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-    //                  @Override
-    //                  public void onComplete(@NonNull Task<QuerySnapshot> task) {
-    //                      if (task.isSuccessful()) {
-    //                          //noinspection ConstantConditions
-    //                          for (QueryDocumentSnapshot snapshot : task.getResult()) {
-    //                              O_DAT_UNLOCKED++;
-    //                          }
-    //                      } else {
-    //                          Log.d("TAG", "onComplete: Load data error " + task.getException());
-    //                      }
-    //                  }
-    //              });
-    // }
-
     public void pushData(){
         Thread t1, t2, t3, t4, t5;
 
+        process=0;
         //đưa dữ liệu nông trại lên firestore
         t1 = new Thread(){
             @SuppressLint("DefaultLocale")
@@ -106,14 +92,11 @@ public class EnterGameActivity extends AppCompatActivity {
                 accInfor.setuID(USERID);
                 accInfor.Create();
                 db.collection("ThongTinNongTrai").document(USERID)
-                        .set(accInfor)
+                        .set(accInfor, SetOptions.merge())
                         .addOnSuccessListener(unused -> {
-                            setUp(accInfor.getTongTienNongTrai(),accInfor.getExpLevel(),accInfor.getGiaTriTheLuc(),accInfor.getTongSoLuongLua(),accInfor.getTongSoluongCachua(),accInfor.getTongSoLuongCaRot());
                             process+=13;
                             tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-                            if (process==100){
-                                startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
-                            }
+                            if (process==100) getData();
                         });
             }
         };
@@ -129,39 +112,33 @@ public class EnterGameActivity extends AppCompatActivity {
 //                String ns_lua_id = String.valueOf(ns_lua.getNongSanID());
                 db.collection("RuongNongSan").document(USERID)
                         .collection("NongSanID").document(String.valueOf(ns_lua.getNongSanID()))
-                        .set(ns_lua)
+                        .set(ns_lua, SetOptions.merge())
                         .addOnSuccessListener(unused -> {
                             process+=7;
                             tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-                            if (process==100){
-                                startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
-                            }
+                            if (process==100) getData();
                         });
 
                 RuongNongSan ns_cachua = new RuongNongSan(USERID,2,1,7,11);
 //                String ns_cachua_id = String.valueOf(ns_lua.getNongSanID());
                 db.collection("RuongNongSan").document(USERID)
                         .collection("NongSanID").document(String.valueOf(ns_cachua.getNongSanID()))
-                        .set(ns_cachua)
+                        .set(ns_cachua, SetOptions.merge())
                         .addOnSuccessListener(unused -> {
                             process+=7;
                             tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-                            if (process==100){
-                                startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
-                            }
+                            if (process==100) getData();
                         });
 
                 RuongNongSan ns_carot = new RuongNongSan(USERID,3,1,9,12);
 //                String ns_carot_id = String.valueOf(ns_lua.getNongSanID());
                 db.collection("RuongNongSan").document(USERID)
                         .collection("NongSanID").document(String.valueOf(ns_carot.getNongSanID()))
-                        .set(ns_carot)
+                        .set(ns_carot, SetOptions.merge())
                         .addOnSuccessListener(unused -> {
                             process+=7;
                             tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-                            if (process==100){
-                                startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
-                            }
+                            if (process==100) getData();
                         });
             }
         };
@@ -175,43 +152,37 @@ public class EnterGameActivity extends AppCompatActivity {
                 db = FirebaseFirestore.getInstance();
                 for (int i=1; i<5;i++) {
                     ODat lua = new ODat(USERID, 10 + i, false, false, false, false, false, 0, 0);
-                    lua.Create();
+                    lua.Create(10+i);
                     if (i==1) lua.setMoKhoa(true);
                     db.collection("ODat").document(USERID)
                             .collection("ODatID").document(String.valueOf(lua.getoDatID()))
-                            .set(lua)
+                            .set(lua, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
                                 process+=1;
                                 tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-                                if (process==100){
-                                    startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
-                                }
+                                if (process==100) getData();
                             });
 
                     ODat cachua = new ODat(USERID, 20 + i, false, false, false, false, false, 0, 0);
-                    cachua.Create();
+                    cachua.Create(20+i);
                     db.collection("ODat").document(USERID)
                             .collection("ODatID").document(String.valueOf(cachua.getoDatID()))
-                            .set(lua)
+                            .set(cachua, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
                                 process+=1;
                                 tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-                                if (process==100){
-                                    startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
-                                }
+                                if (process==100) getData();
                             });
 
                     ODat carot = new ODat(USERID, 30 + i, false, false, false, false, false, 0, 0);
-                    carot.Create();
+                    carot.Create(30+i);
                     db.collection("ODat").document(USERID)
                             .collection("ODatID").document(String.valueOf(carot.getoDatID()))
-                            .set(lua)
+                            .set(carot, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
                                 process+=1;
                                 tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-                                if (process==100){
-                                    startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
-                                }
+                                if (process==100) getData();
                             });
                 }
             }
@@ -231,13 +202,11 @@ public class EnterGameActivity extends AppCompatActivity {
                     donHang.Create();
                     db.collection("DonHang").document(USERID)
                             .collection("DonHangID").document(String.valueOf(donHang.getDonHangID()))
-                            .set(donHang)
+                            .set(donHang, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
                                 process+=2;
                                 tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-                                if (process==100){
-                                    startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
-                                }
+                                if (process==100) getData();
                             });
                 }
             }
@@ -255,39 +224,33 @@ public class EnterGameActivity extends AppCompatActivity {
                     String sp_id = String.valueOf(sp_lua.getSanPhamID());
                     db.collection("Shop").document(USERID)
                             .collection("SanPhamID").document(sp_id)
-                            .set(sp_lua)
+                            .set(sp_lua, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
                                 process+=2;
                                 tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-                                if (process==100){
-                                    startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
-                                }
+                                if (process==100) getData();
                             });
 
                     SanPham sp_cachua = new SanPham(USERID, 20 + sp, "Hạt cà chua giống cấp " + sp, "img_cachua", "Nâng sản lượng thu hoạch cà chua từ " + 11 * (sp - 1) + " lên " + 11 * sp, 25 * sp, false);
                     sp_id = String.valueOf(sp_cachua.getSanPhamID());
                     db.collection("Shop").document(USERID)
                             .collection("SanPhamID").document(sp_id)
-                            .set(sp_cachua)
+                            .set(sp_cachua, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
                                 process+=2;
                                 tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-                                if (process==100){
-                                    startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
-                                }
+                                if (process==100) getData();
                             });
 
                     SanPham sp_carot = new SanPham(USERID, 30 + sp, "Hạt cà rốt giống cấp " + sp, "img_carot", "Nâng sản lượng thu hoạch cà rốt từ " + 12 * (sp - 1) + " lên " + 12 * sp, 20 * sp, false);
                     sp_id = String.valueOf(sp_carot.getSanPhamID());
                     db.collection("Shop").document(USERID)
                             .collection("SanPhamID").document(sp_id)
-                            .set(sp_carot)
+                            .set(sp_carot, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
                                 process+=2;
                                 tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-                                if (process==100){
-                                    startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
-                                }
+                                if (process==100) getData();
                             });
                 }
             }
@@ -295,8 +258,9 @@ public class EnterGameActivity extends AppCompatActivity {
         t5.start();
     }
 
-    @SuppressLint("DefaultLocale")
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     public void getData(){
+        process=0;
         db = FirebaseFirestore.getInstance();
         db.collection("ThongTinNongTrai").document(USERID)
                 .get()
@@ -304,7 +268,43 @@ public class EnterGameActivity extends AppCompatActivity {
                     ThongTinTaiKhoan accInfor = documentSnapshot.toObject(ThongTinTaiKhoan.class);
                     assert accInfor != null;
                     setUp(accInfor.getTongTienNongTrai(), accInfor.getExpLevel(), accInfor.getGiaTriTheLuc(), accInfor.getTongSoLuongLua(), accInfor.getTongSoluongCachua(), accInfor.getTongSoLuongCaRot());
-                    startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
+                    process+=50;
+                    tv2.setText(String.format("Đang tải dữ liệu nông trại, tiến độ %d (%%)", process));
+                    if (process==100) startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        process=-100;
+                        tv2.setText("Tải dữ liệu nông trại thất bại.");
+                    }
+                });
+        O_DAT_UNLOCKED=0;
+        db.collection("ODat").document(USERID)
+                .collection("ODatID").whereEqualTo("moKhoa",true)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            //noinspection ConstantConditions
+                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                                O_DAT_UNLOCKED++;
+                            }
+                            process+=50;
+                            tv2.setText(String.format("Đang tải dữ liệu nông trại, tiến độ %d (%%)", process));
+                            if (process==100) startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
+                        } else {
+                            Log.d("TAG", "onComplete: Load data error " + task.getException());
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        process=-100;
+                        tv2.setText("Tải dữ liệu thất bại.");
+                    }
                 });
     }
 }

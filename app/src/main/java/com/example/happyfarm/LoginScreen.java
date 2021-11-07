@@ -20,12 +20,13 @@ import android.widget.Toast;
 import com.example.happyfarm.Model.TaiKhoan;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.Objects;
 
 public class LoginScreen extends AppCompatActivity {
     public static String USERNAME, USERID;
-    public static int FARMCOIN, FARMLEVEL, STAMINA, LUA, CACHUA, CAROT;
+    public static int FARMCOIN, FARMLEVEL, FARMEXP, STAMINA, LUA, CACHUA, CAROT;
 
     Button btnLogin, btnReg;
     EditText usn, pwd, repwd;
@@ -115,7 +116,7 @@ public class LoginScreen extends AppCompatActivity {
             //đưa acc lên firestore
             db = FirebaseFirestore.getInstance();
             db.collection("User").document(accDemo.getUid())
-                    .set(accDemo)
+                    .set(accDemo, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> {
                         USERID = accDemo.getUid();
                         Toast.makeText(getApplicationContext(), "Đăng ký acc thành công!", Toast.LENGTH_SHORT).show();
@@ -131,7 +132,7 @@ public class LoginScreen extends AppCompatActivity {
     }
 
     //đăng nhập
-    private void doLogin(String loginName, String pass) {
+    public void doLogin(String loginName, String pass) {
         db = FirebaseFirestore.getInstance();
         db.collection("User")
                 .get()

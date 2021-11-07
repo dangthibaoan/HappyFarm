@@ -1,5 +1,13 @@
 package com.example.happyfarm.Model;
 
+import static com.example.happyfarm.LoginScreen.CACHUA;
+import static com.example.happyfarm.LoginScreen.CAROT;
+import static com.example.happyfarm.LoginScreen.FARMCOIN;
+import static com.example.happyfarm.LoginScreen.FARMEXP;
+import static com.example.happyfarm.LoginScreen.LUA;
+import static com.example.happyfarm.LoginScreen.STAMINA;
+import static com.example.happyfarm.LoginScreen.USERID;
+
 public class ThongTinTaiKhoan {
     private String uID;
     private int tongTienNongTrai;
@@ -68,6 +76,7 @@ public class ThongTinTaiKhoan {
     }
 
     public void Create(){
+        this.setuID(USERID);
         this.setTongTienNongTrai(0);
         this.setExpLevel(0);
         this.setGiaTriTheLuc(150);
@@ -76,28 +85,13 @@ public class ThongTinTaiKhoan {
         this.setTongSoLuongCaRot(0);
     }
 
-   /* public void Update(){
-
-
-        db.collection("ThongTinNongTrai")
-                .document(USERID)
-                .update("tongTienNongTrai",this.getTongTienNongTrai(),
-                        "expLevel", this.getExpLevel(),
-                        "giaTriTheLuc", this.getGiaTriTheLuc(),
-                        "tongSoLuongLua", this.getTongSoLuongLua(),
-                        "tongSoLuongCaChua", this.getTongSoluongCachua(),
-                        "tongSoLuongCaRot", this.getTongSoLuongCaRot())//sửa lại uid trong thông tin đăng nhập
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("TAG", "onSuccess: Add role success");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", "onFailure: " + e.getMessage());
-                    }
-                });
-    }*/
+    public void GetData(){
+        this.setuID(USERID);
+        this.setTongTienNongTrai(FARMCOIN);
+        this.setExpLevel(FARMEXP);
+        this.setGiaTriTheLuc(STAMINA);
+        this.setTongSoLuongLua(LUA);
+        this.setTongSoluongCachua(CACHUA);
+        this.setTongSoLuongCaRot(CAROT);
+    }
 }

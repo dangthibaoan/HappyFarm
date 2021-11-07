@@ -60,7 +60,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:srcCompat="@drawable/farmcoin" />
     <TextView
-        android:id="@+id/txtMoney"
+        android:id="@+id/txtCoin"
         android:text="@string/number"
         android:textColor="@color/white"
         android:textStyle="bold"

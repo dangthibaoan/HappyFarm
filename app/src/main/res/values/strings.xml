@@ -10,8 +10,7 @@
     <string name="number">50</string>
     <string name="stamina_value">Giá trị thể lực</string>
     <string name="stamina_number">150/150</string>
-    <string name="name">XXXX</string>
-    <string name="lichsu">LỊCH SỬ</string>
+    <string name="name">loading…</string>
     <string name="mua">mua</string>
     <string name="dangco">Đang có:</string>
     <string name="login">Đăng nhập</string>

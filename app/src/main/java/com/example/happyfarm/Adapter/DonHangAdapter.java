@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.happyfarm.BoQua;
+import com.example.happyfarm.GiaoHang;
 import com.example.happyfarm.Model.DonHang;
-import com.example.happyfarm.Model.ODat;
 import com.example.happyfarm.R;
 
 import java.util.List;
@@ -18,6 +20,8 @@ import java.util.List;
 public class DonHangAdapter extends BaseAdapter {
     Context context;
     List<DonHang> list;
+    private GiaoHang giaoHang;
+    private BoQua boQua;
 
     public DonHangAdapter(Context context, List<DonHang> list) {
         this.context = context;
@@ -39,46 +43,52 @@ public class DonHangAdapter extends BaseAdapter {
         return 0;
     }
 
+    static class ViewHolder {
+        ImageView imgNongSan;
+        TextView txtSolg;
+        ImageView imgCoin;
+        TextView txtCoin;
+        ImageButton imgGiaohang;
+        ImageButton imgBoqua;
+    }
+
     @SuppressLint({"InflateParams", "ViewHolder", "DefaultLocale"})
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        ViewHolder holder = new ViewHolder();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.item_donhang, null);
+
+        holder.imgNongSan = convertView.findViewById(R.id.imgNongsan);
+        holder.txtSolg = convertView.findViewById(R.id.txtSolg);
+        holder.imgCoin = convertView.findViewById(R.id.imgCoin);
+        holder.txtCoin = convertView.findViewById(R.id.txtCoin);
+        holder.imgGiaohang = convertView.findViewById(R.id.imgGiaohang);
+        holder.imgBoqua = convertView.findViewById(R.id.imgBoqua);
+        convertView.setTag(holder);
+
         DonHang donHang = list.get(position);
 
-        ImageView imgNongsan = convertView.findViewById(R.id.imgNongsan);
         switch (donHang.getNongSanID()) {
             case 1:
-                imgNongsan.setImageResource(R.drawable.ic_lua);
+                holder.imgNongSan.setImageResource(R.drawable.ic_lua);
                 break;
             case 2:
-                imgNongsan.setImageResource(R.drawable.ic_cachua);
+                holder.imgNongSan.setImageResource(R.drawable.ic_cachua);
                 break;
             case 3:
-                imgNongsan.setImageResource(R.drawable.ic_carot);
+                holder.imgNongSan.setImageResource(R.drawable.ic_carot);
                 break;
         }
+        holder.txtSolg.setText(String.format("x%d",donHang.getSoLuongMua()));
+        holder.imgCoin.setImageResource(R.drawable.farmcoin);
+        holder.txtCoin.setText(String.valueOf(donHang.getTienHang()));
+        holder.imgGiaohang.setImageResource(R.drawable.ic_ok);
+        holder.imgGiaohang.setOnClickListener(v -> giaoHang.giaoHang(position));
 
-        TextView txtSolg = convertView.findViewById(R.id.txtSolg);
-        txtSolg.setText(String.format("x%d",donHang.getSoLuongMua()));
+        holder.imgBoqua.setImageResource(R.drawable.ic_cancel);
+        holder.imgBoqua.setOnClickListener(v -> boQua.boQua(position));
 
-        ImageView imgCoin = convertView.findViewById(R.id.imgCoin);
-        imgCoin.setImageResource(R.drawable.farmcoin);
-
-        TextView txtCoin = convertView.findViewById(R.id.txtCoin);
-        txtCoin.setText(String.valueOf(donHang.getTienHang()));
-
-        ImageView imgGiaohang = convertView.findViewById(R.id.imgGiaohang);
-        imgGiaohang.setImageResource(R.drawable.ic_ok);
-        imgGiaohang.setOnClickListener(view -> {
-
-        });
-
-        ImageView imgBoqua = convertView.findViewById(R.id.imgBoqua);
-        imgBoqua.setImageResource(R.drawable.ic_cancel);
-        imgBoqua.setOnClickListener(view -> {
-
-        });
         return convertView;
     }
 }
