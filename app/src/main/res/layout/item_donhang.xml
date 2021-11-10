@@ -3,59 +3,39 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="UseCompoundDrawables">
     <TableRow
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
         <ImageView
             android:id="@+id/imgNongsan"
-            android:src="@drawable/ic_launcher_foreground"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:src="@drawable/ic_lua"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:contentDescription="@string/img" />
         <TextView
             android:id="@+id/txtSolg"
-            android:text="@string/name"
-            android:textSize="30sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </TableRow>
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/imgCoin"
-            android:src="@drawable/farmcoin"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:contentDescription="@string/img" />
-        <TextView
-            android:id="@+id/txtCoin"
             android:text="@string/number"
             android:textSize="30sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/imgCoin"
+            android:src="@drawable/farmcoin"
+            android:layout_marginStart="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/img" />
+        <TextView
+            android:id="@+id/txtCoin"
+            android:text="@string/number"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </TableRow>
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageButton
-            android:id="@+id/imgBoqua"
-            android:src="@drawable/ic_cancel"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="20dp"
-            android:contentDescription="@string/img" />
-        <ImageButton
-            android:id="@+id/imgGiaohang"
-            android:src="@drawable/ic_ok"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="20dp"
-            android:contentDescription="@string/img" />
-            </TableRow>
 
 </LinearLayout>

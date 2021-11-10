@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.happyfarm" >
 
     <application
@@ -8,13 +9,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HappyFarm" >
-        <activity android:name=".DonHangScreen" />
-        <activity android:name=".HappyFarmScreen" />
-        <activity android:name=".EnterGameActivity" />
-        <activity android:name=".ShopScreen" />
-        <activity android:name=".LoginScreen" />
-        <activity android:name=".MainActivity" >
+        android:theme="@style/Theme.HappyFarm"
+        tools:ignore="AllowBackup">
+        <activity
+            android:name=".HappyFarmScreen"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".EnterGameActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".LoginScreen"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="IntentFilterExportedReceiver,LockedOrientationActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

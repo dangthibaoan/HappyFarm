@@ -3,23 +3,34 @@ package com.example.happyfarm;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.happyfarm.Adapter.DonHangAdapter;
+import com.example.happyfarm.Adapter.SPAdapter;
+import com.example.happyfarm.Model.DonHang;
 import com.example.happyfarm.Model.ODat;
 import com.example.happyfarm.Model.RuongNongSan;
+import com.example.happyfarm.Model.SanPham;
 import com.example.happyfarm.Model.ThongTinTaiKhoan;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import static com.example.happyfarm.EnterGameActivity.O_DAT_UNLOCKED;
 import static com.example.happyfarm.EnterGameActivity.setUp;
 import static com.example.happyfarm.LoginScreen.CACHUA;
 import static com.example.happyfarm.LoginScreen.CAROT;
@@ -32,19 +43,37 @@ import static com.example.happyfarm.LoginScreen.USERID;
 import static java.lang.Math.pow;
 
 public class HappyFarmScreen extends AppCompatActivity {
-
-//    RuongNongSan ruongNongSan;
+    public static int O_DAT_UNLOCKED;
 
     ImageView img_bg, imgLogout, imgCoin, imgIcLua, imgIcCachua, imgIcCarot, imgTimeSkip, imgLua, imgCachua, imgCarot, imgDat1, imgDat2, imgDat3, imgDat4, imgPhanbon, imgReact, imgNuoc, imgShop, imgDonhang;
     TextView txtUsn, txtLvl, txtFcoin, txtLua, txtCachua, txtCarot, txtStaVal;
 
+    List<DonHang> donHangList;
+    DonHangAdapter donHangAdapter;
+
+    ListView listView;
+    ImageView imgGiaoHang, imgBoQua;
+
+    List<SanPham> sanPhamList;
+    SPAdapter adapter;
+
+    TextView txtUID, txtCoin;
+    ListView listViewShop;
+    ImageView imgCoinShop;
+    Button btnMua;
+
+    int vitri = -1;
+    int donHangID, nongSanID, soLuongMua, tienHang;
+
+    int idSP, donGiaSP;
+    String tenSP;
+    Boolean status;
+
     int oDat1, oDat2, oDat3, oDat4;
     int react, ruongNS, oDatID, viTriODat, process = -1;
-    boolean tuoiNuoc, bonPhan;      //true - đã tưới, đã bón; false - chưa tưới, chưa bón
+    boolean tuoiNuoc, bonPhan = false;      //true - đã tưới, đã bón; false - chưa tưới, chưa bón
 
-    int soNgayThuHoach, sanLuongThuHoach, levelHatGiong, tienHatGiong;
-
-    ThongTinTaiKhoan thongTinTaiKhoan;
+    int soNgayThuHoachBanDau, soNgayThuHoach, sanLuongThuHoachBanDau, sanLuongThuHoach, levelHatGiong, tienHatGiong;
 
     FirebaseFirestore db;
 
@@ -73,7 +102,7 @@ public class HappyFarmScreen extends AppCompatActivity {
         img_bg.setImageResource(R.drawable.bg_03);
 
         imgLogout = findViewById(R.id.imgLogout);
-        imgLogout.setImageResource(R.drawable.ic_logout);
+        imgLogout.setImageResource(R.drawable.bg_01);
 
         imgCoin = findViewById(R.id.imgMoney);
         imgCoin.setImageResource(R.drawable.farmcoin);
@@ -100,8 +129,12 @@ public class HappyFarmScreen extends AppCompatActivity {
         imgDat4 = findViewById(R.id.imgDat4);
 
         imgReact = findViewById(R.id.imgReact);
+
         imgNuoc = findViewById(R.id.imgTuoinc);
+        imgNuoc.setImageResource(R.drawable.react_tuoinc);
+
         imgPhanbon = findViewById(R.id.imgBonphan);
+        imgPhanbon.setImageResource(R.drawable.react_bonphan);
 
         imgDonhang = findViewById(R.id.imgOrder);
         imgDonhang.setImageResource(R.drawable.icon_order);
@@ -116,7 +149,8 @@ public class HappyFarmScreen extends AppCompatActivity {
             @Override
             public void run() {
                 //lấy dữ liệu thông tin nông trại
-                db.collection("ThongTinNongTrai").document(USERID)
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                         .get()
                         .addOnSuccessListener(documentSnapshot -> {
                             ThongTinTaiKhoan accInfor = documentSnapshot.toObject(ThongTinTaiKhoan.class);
@@ -128,7 +162,8 @@ public class HappyFarmScreen extends AppCompatActivity {
             }
         };
         thread.start();
-        db.collection("ThongTinNongTrai").document(USERID)
+        db.collection("ThongTinTaiKhoan").document(USERID)
+                .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                 .addSnapshotListener((value, error) -> {
                     ThongTinTaiKhoan accInfor = Objects.requireNonNull(value).toObject(ThongTinTaiKhoan.class);
                     setUp(Objects.requireNonNull(accInfor).getTongTienNongTrai(), accInfor.getExpLevel(), accInfor.getGiaTriTheLuc(), accInfor.getTongSoLuongLua(), accInfor.getTongSoluongCachua(), accInfor.getTongSoLuongCaRot());
@@ -138,16 +173,32 @@ public class HappyFarmScreen extends AppCompatActivity {
 
         //==========================
         imgLua.setOnClickListener(v -> {
+            react = oDatID = viTriODat = -1;
+            tuoiNuoc = bonPhan = false;
+
             ruongNS=1;
             loadData();
         });
         imgCachua.setOnClickListener(v -> {
-            ruongNS=2;
-            loadData();
+            react = oDatID = viTriODat = -1;
+            tuoiNuoc = bonPhan = false;
+
+            if (FARMLEVEL<3) Toast.makeText(getApplicationContext(), "Nông trại của bạn chưa đạt level 3.", Toast.LENGTH_SHORT).show();
+            else {
+                ruongNS=2;
+                loadData();
+            }
+
         });
         imgCarot.setOnClickListener(v -> {
-            ruongNS=3;
-            loadData();
+            react = oDatID = viTriODat = -1;
+            tuoiNuoc = bonPhan = false;
+
+            if (FARMLEVEL<10) Toast.makeText(getApplicationContext(), "Nông trại của bạn chưa đạt level 10.", Toast.LENGTH_SHORT).show();
+            else {
+                ruongNS=3;
+                loadData();
+            }
        });
 
         imgDat1.setOnClickListener(view -> {
@@ -170,7 +221,7 @@ public class HappyFarmScreen extends AppCompatActivity {
         imgReact.setOnClickListener(view -> {
             switch (react){
                 case 0://mở khóa ô đất
-                    moKhoaODat(oDatID);
+                    getODatUnlocked(oDatID);
                     loadData();
                     break;
                 case 1://làm đất
@@ -181,7 +232,10 @@ public class HappyFarmScreen extends AppCompatActivity {
                     gieoHat(oDatID);
                     loadData();
                     break;
-                case 3://thu hoạch
+                case 3://chờ thu hoạch
+                    Toast.makeText(getApplicationContext(), "Chưa thể thu hoạch.", Toast.LENGTH_SHORT).show();
+                    break;
+                case 4://thu hoạch
                     switch (oDatID/10){
                         case 1:
                             thuHoach(oDatID,"Lúa");
@@ -201,35 +255,200 @@ public class HappyFarmScreen extends AppCompatActivity {
         });
 
         imgNuoc.setOnClickListener(view -> {
-//            if (tuoiNuoc) {
-//
-//            } else if (!tuoiNuoc) {
-//
-//            }
-            Toast.makeText(getApplicationContext(), "Tính năng này chưa phát triển.", Toast.LENGTH_SHORT).show();
+            if (react==3) tuoiNuoc(oDatID);
+            else Toast.makeText(getApplicationContext(), "Tưới nước mỗi ngày sẽ thu hoạch được nhiều hơn.", Toast.LENGTH_SHORT).show();
         });
 
         imgPhanbon.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Tính năng này chưa phát triển.", Toast.LENGTH_SHORT).show();
+            if (react==3) bonPhan(oDatID);
+            else Toast.makeText(getApplicationContext(), "Bón phân mỗi ngày sẽ rút ngắn thời gian thu hoạch.", Toast.LENGTH_SHORT).show();
         });
 
         imgDonhang.setOnClickListener(v -> {
-            //startActivity(new Intent(HappyFarmScreen.this,DonHangScreen.class));
-            Toast.makeText(getApplicationContext(), "Tính năng này chưa phát triển.", Toast.LENGTH_SHORT).show();
+            LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            @SuppressLint("InflateParams") View view1 = inflater.inflate(R.layout.dialog_don_hang_screen, null);
+            //.....................
+
+            listView = view1.findViewById(R.id.lvDonHang);
+            imgGiaoHang = view1.findViewById(R.id.imgGiaohang);
+            imgBoQua = view1.findViewById(R.id.imgBoqua);
+
+            donHangList = new ArrayList<>();
+            for(int ii=0;ii<12;ii++){
+                DonHang donHang = new DonHang();
+                donHang.setDonHangID(ii);
+                donHang.Create();
+                donHangList.add(donHang);
+            }
+            donHangAdapter = new DonHangAdapter(getApplicationContext(),donHangList);
+            listView.setAdapter(donHangAdapter);
+
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                DonHang donHang = (DonHang) parent.getItemAtPosition(position);
+                vitri = position;
+                donHangID = donHang.getDonHangID();
+                nongSanID = donHang.getNongSanID();
+                soLuongMua = donHang.getSoLuongMua();
+                tienHang = donHang.getTienHang();
+            });
+
+            imgGiaoHang.setOnClickListener(v1 -> {
+                if (vitri == -1)
+                    Toast.makeText(HappyFarmScreen.this.getApplicationContext(), "Chưa chọn đơn hàng.", Toast.LENGTH_SHORT).show();
+                else
+                    HappyFarmScreen.this.giaoHang(vitri);
+            });
+
+            imgBoQua.setOnClickListener(v2 -> {
+                if (vitri==-1)
+                    Toast.makeText(getApplicationContext(),"Chưa chọn đơn hàng.", Toast.LENGTH_SHORT).show();
+                else
+                    boQua(vitri);
+            });
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(HappyFarmScreen.this);
+            builder.setTitle("Đơn đặt hàng")
+                    .setView(view1)
+                    .setNegativeButton("Đóng", (dialog, which) -> dialog.dismiss());
+            AlertDialog dialog = builder.create();
+            dialog.show();
         });
 
-        imgShop.setOnClickListener(view -> startActivity(new Intent(HappyFarmScreen.this,ShopScreen.class)));
+        imgShop.setOnClickListener(view -> {
+            if (FARMLEVEL<3){
+                Toast.makeText(getApplicationContext(), "Nông trại level 3 sẽ mở shop hạt giống.", Toast.LENGTH_SHORT).show();
+            } else {
+                LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                @SuppressLint("InflateParams") View view1 = inflater.inflate(R.layout.dialog_shop_screen, null);
+                //.....................
+
+                txtUID = view1.findViewById(R.id.txtUID);
+                txtCoin = view1.findViewById(R.id.txtCoin);
+                listViewShop = view1.findViewById(R.id.lvSanpham);
+                imgCoinShop = view1.findViewById(R.id.imgCoin);
+                btnMua = view1.findViewById(R.id.btnMua);
+
+                txtUID.setText(USERID);
+                txtCoin.setText(String.valueOf(FARMCOIN));
+                imgCoinShop.setImageResource(R.drawable.farmcoin);
+
+                db = FirebaseFirestore.getInstance();
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("Shop")
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            sanPhamList = new ArrayList<>();
+                            if (task.isSuccessful()) {
+                                //noinspection ConstantConditions
+                                for (QueryDocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
+                                    SanPham sanPham = snapshot.toObject(SanPham.class);
+                                    sanPhamList.add(sanPham);
+                                }
+                                adapter = new SPAdapter(getApplicationContext(),sanPhamList);
+                                listViewShop.setAdapter(adapter);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Lỗi!", Toast.LENGTH_SHORT).show();
+                                Log.d("Tag", "onComplete: Load data error " + task.getException());
+                            }
+                        });
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("Shop")
+                        .addSnapshotListener((value, error) -> {
+                            sanPhamList = new ArrayList<>();
+                            assert value != null;
+                            for (QueryDocumentSnapshot snapshot : value) {
+                                SanPham sanPham = snapshot.toObject(SanPham.class);
+                                sanPhamList.add(sanPham);
+                            }
+                            adapter = new SPAdapter(getApplicationContext(),sanPhamList);
+                            listViewShop.setAdapter(adapter);
+                        });
+
+                listViewShop.setOnItemClickListener((parent, v, position, id) -> {
+                    SanPham sanPham = (SanPham) parent.getItemAtPosition(position);
+                    idSP = sanPham.getSanPhamID();
+                    tenSP = sanPham.getTenSanPham();
+                    donGiaSP = sanPham.getDonGia();
+                    status = sanPham.isTrangThaiSanPham();
+                    if (status){
+                        btnMua.setText("Đã mua");
+                        btnMua.setBackgroundResource(0);
+                        btnMua.setEnabled(false);
+                    } else {
+                        btnMua.setText(String.format("%d", donGiaSP));
+                        btnMua.setBackgroundResource(R.drawable.farmcoin);
+                        btnMua.setEnabled(true);
+                    }
+                });
+
+                btnMua.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (FARMCOIN >= donGiaSP){
+                            //trừ tiền
+                            Thread truTien = new Thread(){
+                                @SuppressLint("DefaultLocale")
+                                @Override
+                                public void run() {
+                                    db = FirebaseFirestore.getInstance();
+                                    db.collection("ThongTinTaiKhoan").document(USERID)
+                                            .collection("ThongTinNongTrai").document("ThongTinNongTrai")
+                                            .update("tongTienNongTrai",FARMCOIN - donGiaSP)
+                                            .addOnSuccessListener(aVoid -> {
+                                                Toast.makeText(getApplicationContext(), String.format("Farmcoin - %d.", donGiaSP), Toast.LENGTH_SHORT).show();
+                                                Log.d("TAG", "onSuccess: Update success");
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Toast.makeText(getApplicationContext(),"Lỗi", Toast.LENGTH_SHORT).show();
+                                            });
+                                }
+                            };
+                            truTien.start();
+                            //cập nhật thông tin shop
+                            Thread updateShop = new Thread(){
+                                @Override
+                                public void run() {
+                                    db = FirebaseFirestore.getInstance();
+                                    db.collection("ThongTinTaiKhoan").document(USERID)
+                                            .collection("Shop").document(String.valueOf(idSP))
+                                            .update("trangThaiSanPham", true)
+                                            .addOnSuccessListener(aVoid -> {
+                                                Toast.makeText(getApplicationContext(), String.format("Mua %s thành công", tenSP), Toast.LENGTH_SHORT).show();
+                                                Log.d("TAG", "onSuccess: Update success");
+                                            })
+                                            .addOnFailureListener(e -> Log.d("TAG", "onFailure: Update success"));
+                                }
+                            };
+                        } else
+                            Toast.makeText(getApplicationContext(), "Không đủ tiền nông trại", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(HappyFarmScreen.this);
+                builder.setTitle("Shop hạt giống")
+                        .setView(view1)
+                        .setNegativeButton("Đóng", (dialog, which) -> dialog.dismiss());
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+
+        });
+
+        imgTimeSkip.setOnClickListener(v -> sangNgayMoi());     //ok
 
         imgLogout.setOnClickListener(view -> {
-
+            //chưa làm
         });
 
     }
 
     @SuppressLint("DefaultLocale")
     public void loadData(){
+        img_bg.setBackgroundResource(0);
+        img_bg.setImageResource(R.drawable.bg_03);
+
         txtUsn.setText(String.format("%s", USERID));
-        int level1 = (int) ((int) 100 * (pow(2, FARMLEVEL + 1) - 1));
+        int level1 = (int) ( 100 * (pow(2, FARMLEVEL + 1) - 1));
         txtLvl.setText(String.format("Level %d (%d/%d)", FARMLEVEL, FARMEXP, level1));
         txtFcoin.setText(String.format("%d", FARMCOIN));
         txtLua.setText(String.format("%d", LUA));
@@ -240,35 +459,27 @@ public class HappyFarmScreen extends AppCompatActivity {
         switch (react){
             case 0:
                 imgReact.setImageResource(R.drawable.farmcoin);
+                imgReact.setEnabled(true);
                 break;
             case 1:
                 imgReact.setImageResource(R.drawable.react_lamdat);
+                imgReact.setEnabled(true);
                 break;
             case 2:
                 imgReact.setImageResource(R.drawable.react_gieohat);
+                imgReact.setEnabled(true);
                 break;
             case 3:
                 imgReact.setImageResource(R.drawable.react_thuhoach);
+                imgReact.setEnabled(false);
+                break;
+            case 4:
+                imgReact.setImageResource(R.drawable.react_thuhoach);
+                imgReact.setEnabled(true);
                 break;
             default:
                 imgReact.setImageResource(0);
-        }
-        if (tuoiNuoc) {
-            imgNuoc.setImageResource(0);
-            imgNuoc.setEnabled(false);
-        }
-        else {
-            imgNuoc.setImageResource(R.drawable.react_tuoinc);
-            imgNuoc.setEnabled(true);
-        }
-
-        if (bonPhan) {
-            imgPhanbon.setImageResource(0);
-            imgPhanbon.setEnabled(false);
-        }
-        else {
-            imgPhanbon.setImageResource(R.drawable.react_bonphan);
-            imgPhanbon.setEnabled(true);
+                imgReact.setEnabled(false);
         }
 
         switch (ruongNS){
@@ -277,11 +488,6 @@ public class HappyFarmScreen extends AppCompatActivity {
                 imgCachua.setImageResource(R.drawable.ruongcachua);
                 imgCarot.setImageResource(R.drawable.ruongcarot);
 
-                imgDat1.setImageResource(0);
-                imgDat2.setImageResource(0);
-                imgDat3.setImageResource(0);
-                imgDat4.setImageResource(0);
-
                 chonRuongNongSan(1);
                 break;
             case 2:
@@ -289,22 +495,12 @@ public class HappyFarmScreen extends AppCompatActivity {
                 imgCachua.setImageResource(R.drawable.ic_cachua);
                 imgCarot.setImageResource(R.drawable.ruongcarot);
 
-                imgDat1.setImageResource(0);
-                imgDat2.setImageResource(0);
-                imgDat3.setImageResource(0);
-                imgDat4.setImageResource(0);
-
                 chonRuongNongSan(2);
                 break;
             case 3:
                 imgLua.setImageResource(R.drawable.ruonglua);
                 imgCachua.setImageResource(R.drawable.ruongcachua);
                 imgCarot.setImageResource(R.drawable.ic_carot);
-
-                imgDat1.setImageResource(0);
-                imgDat2.setImageResource(0);
-                imgDat3.setImageResource(0);
-                imgDat4.setImageResource(0);
 
                 chonRuongNongSan(3);
                 break;
@@ -317,6 +513,9 @@ public class HappyFarmScreen extends AppCompatActivity {
                 imgDat2.setImageResource(0);
                 imgDat3.setImageResource(0);
                 imgDat4.setImageResource(0);
+
+                imgReact.setImageResource(0);
+                imgReact.setEnabled(false);
         }
 
         switch (viTriODat){
@@ -353,24 +552,28 @@ public class HappyFarmScreen extends AppCompatActivity {
                 imgDat2.setBackgroundResource(0);
                 imgDat3.setBackgroundResource(0);
                 imgDat4.setBackgroundResource(0);
+
+                imgNuoc.setImageResource(R.drawable.react_tuoinc);
+                imgPhanbon.setImageResource(R.drawable.react_bonphan);
         }
+
     }
 
     public void chonRuongNongSan(int ruongNSID){
         db = FirebaseFirestore.getInstance();
-        db.collection("RuongNongSan").document(USERID)
-                .collection("NongSanID").document(String.valueOf(ruongNSID))
+        db.collection("ThongTinTaiKhoan").document(USERID)
+                .collection("RuongNongSan").document(String.valueOf(ruongNSID))
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     RuongNongSan ruongNongSan = documentSnapshot.toObject(RuongNongSan.class);
                     assert ruongNongSan != null;
                     levelHatGiong = ruongNongSan.getLevelHatGiong();
-                    soNgayThuHoach= ruongNongSan.getSoNgayThuHoach();
-                    sanLuongThuHoach = ruongNongSan.getSanLuongThuHoach();
+                    soNgayThuHoachBanDau = ruongNongSan.getSoNgayThuHoach();
+                    sanLuongThuHoachBanDau = ruongNongSan.getSanLuongThuHoach();
                 });
         for (int i=1; i<=4; i++)
-            db.collection("ODat").document(USERID)
-                    .collection("ODatID").document(String.valueOf(10*ruongNSID+i))
+            db.collection("ThongTinTaiKhoan").document(USERID)
+                    .collection("ODat").document(String.valueOf(10*ruongNSID+i))
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         ODat oDat = documentSnapshot.toObject(ODat.class);
@@ -403,19 +606,19 @@ public class HappyFarmScreen extends AppCompatActivity {
         else {
             switch (oDat.getoDatID()/10){
                 case 1:
-                    if (oDat.getSoNgayThuHoach() <= 5) img.setImageResource(R.drawable.ns_lua01);
-                    if (oDat.getSoNgayThuHoach() <= 3) img.setImageResource(R.drawable.ns_lua02);
-                    if (oDat.getSoNgayThuHoach() <= 1) img.setImageResource(R.drawable.ns_lua03);
+                    if (oDat.getSoNgayThuHoach() <= soNgayThuHoachBanDau) img.setImageResource(R.drawable.ns_lua01);
+                    if (oDat.getSoNgayThuHoach() <= (soNgayThuHoachBanDau/2)) img.setImageResource(R.drawable.ns_lua02);
+                    if (oDat.getSoNgayThuHoach() < 1) img.setImageResource(R.drawable.ns_lua03);
                     break;
                 case 2:
-                    if (oDat.getSoNgayThuHoach() <= 7) img.setImageResource(R.drawable.ns_lua01);
-                    if (oDat.getSoNgayThuHoach() <= 4) img.setImageResource(R.drawable.ns_lua02);
-                    if (oDat.getSoNgayThuHoach() <= 1) img.setImageResource(R.drawable.ns_lua03);
+                    if (oDat.getSoNgayThuHoach() <= soNgayThuHoachBanDau) img.setImageResource(R.drawable.ns_cachua01);
+                    if (oDat.getSoNgayThuHoach() <= soNgayThuHoachBanDau/2) img.setImageResource(R.drawable.ns_cachua02);
+                    if (oDat.getSoNgayThuHoach() < 1) img.setImageResource(R.drawable.ns_cachua03);
                     break;
                 case 3:
-                    if (oDat.getSoNgayThuHoach() <= 9) img.setImageResource(R.drawable.ns_lua01);
-                    if (oDat.getSoNgayThuHoach() <= 5) img.setImageResource(R.drawable.ns_lua02);
-                    if (oDat.getSoNgayThuHoach() <= 1) img.setImageResource(R.drawable.ns_lua03);
+                    if (oDat.getSoNgayThuHoach() <= soNgayThuHoachBanDau) img.setImageResource(R.drawable.ns_carot01);
+                    if (oDat.getSoNgayThuHoach() <= soNgayThuHoachBanDau/2) img.setImageResource(R.drawable.ns_carot02);
+                    if (oDat.getSoNgayThuHoach() < 1) img.setImageResource(R.drawable.ns_carot03);
                     break;
             }
         }
@@ -424,34 +627,59 @@ public class HappyFarmScreen extends AppCompatActivity {
     public void chonODat(int oDatId){
         oDatID = oDatId;
         db = FirebaseFirestore.getInstance();
-        db.collection("ODat").document(USERID)
-                .collection("ODatID").document(String.valueOf(oDatId))
+        db.collection("ThongTinTaiKhoan").document(USERID)
+                .collection("ODat").document(String.valueOf(oDatId))
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     ODat oDat = documentSnapshot.toObject(ODat.class);
                     assert oDat != null;
                     if (!oDat.isMoKhoa()) {
                         react=0;
+                        bonPhan=tuoiNuoc=false;
+                        imgPhanbon.setEnabled(false);
+                        imgNuoc.setEnabled(false);
+                        imgReact.setEnabled(true);
                         imgReact.setImageResource(R.drawable.farmcoin);
-                        Toast.makeText(getApplicationContext(), "Tạm thời chưa thể mở khóa ô đất này.", Toast.LENGTH_SHORT).show();
                     }
                     else if (!oDat.isLamDat()) {
                         react = 1;
+                        bonPhan=tuoiNuoc=false;
+                        imgPhanbon.setEnabled(false);
+                        imgNuoc.setEnabled(false);
+                        imgReact.setEnabled(true);
                         imgReact.setImageResource(R.drawable.react_lamdat);
                     }
                     else if (!oDat.isGieoHat()) {
                         react = 2;
+                        bonPhan=tuoiNuoc=false;
+                        imgPhanbon.setEnabled(false);
+                        imgNuoc.setEnabled(false);
+                        imgReact.setEnabled(true);
                         imgReact.setImageResource(R.drawable.react_gieohat);
                     }
                     else {
-                        react = 3;
-                        imgReact.setImageResource(R.drawable.react_thuhoach);
-                        imgPhanbon.setEnabled(!oDat.isBonPhan());
+                        imgPhanbon.setEnabled(true);
+                        imgNuoc.setEnabled(true);
                         bonPhan = oDat.isBonPhan();
-                        imgNuoc.setEnabled(!oDat.isTuoiNuoc());
                         tuoiNuoc = oDat.isTuoiNuoc();
+
+                        if (bonPhan) imgPhanbon.setImageResource(R.drawable.react_bonphan_ok);
+                        else imgPhanbon.setImageResource(R.drawable.react_bonphan);
+
+                        if (tuoiNuoc) imgNuoc.setImageResource(R.drawable.react_tuoinc_ok);
+                        else imgNuoc.setImageResource(R.drawable.react_tuoinc);
+
                         soNgayThuHoach = oDat.getSoNgayThuHoach();
                         sanLuongThuHoach = oDat.getSanLuongThuHoach();
+
+                        if (soNgayThuHoach==0){
+                            react=4;
+                            imgReact.setEnabled(true);
+                        } else {
+                            react=3;
+                            imgReact.setEnabled(false);
+                        }
+                        imgReact.setImageResource(R.drawable.react_thuhoach);
                     }
                 });
     }
@@ -459,72 +687,73 @@ public class HappyFarmScreen extends AppCompatActivity {
     @SuppressLint("DefaultLocale")
     public void  moKhoaODat(int oDatID){
         process=0;
-        if (FARMCOIN >= (100*O_DAT_UNLOCKED))
-        {
-            //trừ tiền
-            Thread truTien = new Thread(){
-                @SuppressLint("DefaultLocale")
-                @Override
-                public void run() {
-                    db = FirebaseFirestore.getInstance();
-                    db.collection("ThongTinNongTrai").document(USERID)
-                            .update("tongTienNongTrai",FARMCOIN - (100 * O_DAT_UNLOCKED))
-                            .addOnSuccessListener(aVoid -> {
-                                process+=50;
-                                Toast.makeText(getApplicationContext(), String.format("Đã trừ %d tiền nông trại.", O_DAT_UNLOCKED * 100), Toast.LENGTH_LONG).show();
-                                if (process==100) Toast.makeText(getApplicationContext(),"Mở khóa ô đất thành công", Toast.LENGTH_LONG).show();
-                                Log.d("TAG", "onSuccess: Update success");
-                            })
-                            .addOnFailureListener(e -> {
-                                process = -100;
-                                Toast.makeText(getApplicationContext(),"Lỗi", Toast.LENGTH_LONG).show();
-                            });
-                }
-            };
-            truTien.start();
+        //trừ tiền
+        Thread truTien = new Thread(){
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void run() {
+                db = FirebaseFirestore.getInstance();
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("ThongTinNongTrai").document("ThongTinNongTrai")
+                        .update("tongTienNongTrai",FARMCOIN - (100 * O_DAT_UNLOCKED))
+                        .addOnSuccessListener(aVoid -> {
+                            process+=50;
+                            Toast.makeText(getApplicationContext(), String.format("Đã trừ %d tiền nông trại để mở khóa ô đất này.", O_DAT_UNLOCKED * 100), Toast.LENGTH_SHORT).show();
+                            if (process==100) loadData();
+                            Log.d("TAG", "onSuccess: Update success");
+                        })
+                        .addOnFailureListener(e -> {
+                            process = -100;
+                            Toast.makeText(getApplicationContext(),"Lỗi", Toast.LENGTH_SHORT).show();
+                        });
+            }
+        };
+        truTien.start();
 
-            //cập nhật trạng thái ô đất
-            Thread moKhoa = new Thread(){
-                @Override
-                public void run() {
-                    db = FirebaseFirestore.getInstance();
-                    db.collection("ODat").document(USERID)
-                            .collection("ODatID").document(String.valueOf(oDatID))
-                            .update("moKhoa",true)
-                            .addOnSuccessListener(aVoid -> {
-                                process+=50;
-                                if (process==100) Toast.makeText(getApplicationContext(),"Mở khóa ô đất thành công", Toast.LENGTH_LONG).show();
-                                Log.d("TAG", "onSuccess: Update success");
-                            })
-                            .addOnFailureListener(e -> {
-                                process = -100;
-                                Toast.makeText(getApplicationContext(),"Lỗi.", Toast.LENGTH_LONG).show();
-                            });
-
-                }
-            };
-            moKhoa.start();
-        }
-        else {
-            Toast.makeText(getApplicationContext(), String.format("Mở khóa ô đất này cần %d tiền nông trại.", O_DAT_UNLOCKED * 100), Toast.LENGTH_LONG).show();
-        }
+        //cập nhật trạng thái ô đất
+        Thread moKhoa = new Thread(){
+            @Override
+            public void run() {
+                db = FirebaseFirestore.getInstance();
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("ODat").document(String.valueOf(oDatID))
+                        .update("moKhoa",true)
+                        .addOnSuccessListener(aVoid -> {
+                            process+=50;
+                            if (process==100) loadData();
+                            Log.d("TAG", "onSuccess: Update success");
+                        })
+                        .addOnFailureListener(e -> {
+                            process = -100;
+                            Toast.makeText(getApplicationContext(),"Lỗi.", Toast.LENGTH_SHORT).show();
+                        });
+            }
+        };
+        moKhoa.start();
     }
 
     public void lamDat(int oDatID){
+        process=0;
         if (STAMINA>0){
             //cập nhật trạng thái ô đất
             Thread lamDat = new Thread(){
                 @Override
                 public void run() {
                     db = FirebaseFirestore.getInstance();
-                    db.collection("ODat").document(USERID)
-                            .collection("ODatID").document(String.valueOf(oDatID))
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ODat").document(String.valueOf(oDatID))
                             .update("lamDat",true)
                             .addOnSuccessListener(aVoid -> {
+                                process+=50;
+                                if (process==100) loadData();
+                                if (STAMINA<=0) {
+                                    Toast.makeText(getApplicationContext(),"Kiệt sức. Bạn cần nghỉ ngơi.", Toast.LENGTH_SHORT).show();
+                                    sangNgayMoi();
+                                }
                                 Log.d("TAG", "onSuccess: Update success");
                             })
                             .addOnFailureListener(e -> {
-                                Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được trạng thái ô đất.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được trạng thái ô đất.", Toast.LENGTH_SHORT).show();
                                 Log.d("TAG", "onFailure: Update fail");
                             });
                 }
@@ -537,19 +766,15 @@ public class HappyFarmScreen extends AppCompatActivity {
                 @Override
                 public void run() {
                     db = FirebaseFirestore.getInstance();
-                    db.collection("ThongTinNongTrai").document(USERID)
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                             .update("giaTriTheLuc",STAMINA-=10)
                             .addOnSuccessListener(aVoid -> {
-                                Toast.makeText(getApplicationContext(), "Thể lực -10.", Toast.LENGTH_LONG).show();
-                                if (STAMINA<=0) {
-                                    Toast.makeText(getApplicationContext(),"Kiệt sức. Bạn cần nghỉ ngơi.", Toast.LENGTH_LONG).show();
-                                    //chạy chức năng sang ngày mới
-                                }
+                                process+=50;
+                                if (process==100) loadData();
                                 Log.d("TAG", "onSuccess: Update success");
                             })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được thông tin nông trại", Toast.LENGTH_LONG).show();
-                            });
+                            .addOnFailureListener(e -> Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được thông tin nông trại", Toast.LENGTH_SHORT).show());
                 }
             };
             truTheLuc.start();
@@ -558,7 +783,7 @@ public class HappyFarmScreen extends AppCompatActivity {
 
     public void gieoHat(int oDatID){
         if (STAMINA>0){
-            switch (oDatID/10){
+            switch (ruongNS){
                 case 1:
                     tienHatGiong = 5*levelHatGiong;
                     break;
@@ -572,49 +797,62 @@ public class HappyFarmScreen extends AppCompatActivity {
                     tienHatGiong = 0;
                     throw new IllegalStateException("Unexpected value: " + oDatID / 10);
             }
-            if (FARMCOIN>=levelHatGiong && tienHatGiong!=0){
-                //cập nhật trạng thái ô đất
-                Thread gieoHat = new Thread(){
-                    @Override
-                    public void run() {
-                        db = FirebaseFirestore.getInstance();
-                        db.collection("ODat").document(USERID)
-                                .collection("ODatID").document(String.valueOf(oDatID))
-                                .update("gieoHat",true)
-                                .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(getApplicationContext(), "Thể lực -10.", Toast.LENGTH_LONG).show();
-                                    if (STAMINA<=0) {
-                                        Toast.makeText(getApplicationContext(),"Kiệt sức. Bạn cần nghỉ ngơi.", Toast.LENGTH_LONG).show();
-                                        //chạy chức năng sang ngày mới
-                                    }
-                                    Log.d("TAG", "onSuccess: Update success");
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được trạng thái ô đất.", Toast.LENGTH_LONG).show();
-                                });
-                    }
-                };
-                gieoHat.start();
-
+            if (FARMCOIN>=tienHatGiong && tienHatGiong!=0){
+                process=0;
                 //trừ thể lực, tiền nông trại
                 Thread truTheLuc = new Thread(){
                     @SuppressLint("DefaultLocale")
                     @Override
                     public void run() {
                         db = FirebaseFirestore.getInstance();
-                        db.collection("ThongTinNongTrai").document(USERID)
+                        db.collection("ThongTinTaiKhoan").document(USERID)
+                                .collection("ThongTinNongTrai").document("ThongTinNongTrai")
+
                                 .update("giaTriTheLuc",STAMINA-10,
-                                        "tongTienNongTrai",FARMCOIN - (tienHatGiong))
+                                        "tongTienNongTrai",FARMCOIN - tienHatGiong)
                                 .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(getApplicationContext(), String.format("Thể lực -10\nFarmcoin - %d", tienHatGiong), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), String.format("Farmcoin - %d", tienHatGiong), Toast.LENGTH_SHORT).show();
+                                    process+=50;
+                                    if (process==100) loadData();
+                                    if (STAMINA<=0) {
+                                        Toast.makeText(getApplicationContext(),"Kiệt sức. Bạn cần nghỉ ngơi.", Toast.LENGTH_SHORT).show();
+                                        sangNgayMoi();
+                                    }
                                     Log.d("TAG", "onSuccess: Update success");
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được thông tin nông trại", Toast.LENGTH_SHORT).show();
+                                    loadData();
+                                    Log.d("TAG", "onFailure: Update fail");
                                 });
                     }
                 };
                 truTheLuc.start();
+
+                //cập nhật trạng thái ô đất
+                Thread gieoHat = new Thread(){
+                    @Override
+                    public void run() {
+                        db = FirebaseFirestore.getInstance();
+                        db.collection("ThongTinTaiKhoan").document(USERID)
+                                .collection("ODat").document(String.valueOf(oDatID))
+                                .update("gieoHat",true,
+                                        "soNgayThuHoach", soNgayThuHoachBanDau,
+                                        "sanLuongThuHoach", sanLuongThuHoachBanDau)
+                                .addOnSuccessListener(aVoid -> {
+                                    process+=50;
+                                    if (process==100) loadData();
+                                    Log.d("TAG", "onSuccess: Update success");
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được trạng thái ô đất.", Toast.LENGTH_SHORT).show();
+                                    loadData();
+                                    Log.d("TAG", "onFailure: Update fail");
+                                });
+                    }
+                };
+                gieoHat.start();
+
             }
         }
     }
@@ -622,7 +860,7 @@ public class HappyFarmScreen extends AppCompatActivity {
     public void thuHoach(int oDatID, String nongSan){
         if (STAMINA>0){
             //cập nhật tổng số lượng nông sản
-            switch (oDatID/10){
+            switch (oDatID / 10){
                 case 1:
                     LUA += sanLuongThuHoach;
                     break;
@@ -635,36 +873,36 @@ public class HappyFarmScreen extends AppCompatActivity {
                 default:
                     throw new IllegalStateException("Unexpected value: " + oDatID / 10);
             }
-            FARMEXP += 5*sanLuongThuHoach;
-            STAMINA -=10;
-
-            thongTinTaiKhoan.GetData();
-
+            process=0;
             //trừ thể lực
             Thread truTheLuc = new Thread(){
                 @SuppressLint("DefaultLocale")
                 @Override
                 public void run() {
                     db = FirebaseFirestore.getInstance();
-                    db.collection("ThongTinNongTrai").document(USERID)
-                            .update("tongTienNongTrai", thongTinTaiKhoan.getTongTienNongTrai(),
-                                    "expLevel",thongTinTaiKhoan.getExpLevel(),
-                                    "giaTriTheLuc", thongTinTaiKhoan.getGiaTriTheLuc(),
-                                    "tongSoLuongLua", thongTinTaiKhoan.getTongSoLuongLua(),
-                                    "tongSoLuongCachua",thongTinTaiKhoan.getTongSoluongCachua(),
-                                    "tongSoLuongCaRot",thongTinTaiKhoan.getTongSoLuongCaRot())
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ThongTinNongTrai").document("ThongTinNongTrai")
+                            .update("expLevel",FARMEXP + (5 * sanLuongThuHoach),
+                                    "giaTriTheLuc", STAMINA - 10,
+                                    "tongSoLuongLua", LUA,
+                                    "tongSoLuongCachua",CACHUA,
+                                    "tongSoLuongCaRot",CAROT)
                             .addOnSuccessListener(aVoid -> {
                                 Toast.makeText(getApplicationContext(),
                                         String.format("Thể lực -10\nFarmexp + %d\n%S + %d",5*sanLuongThuHoach, nongSan, sanLuongThuHoach),
-                                        Toast.LENGTH_LONG).show();
+                                        Toast.LENGTH_SHORT).show();
+                                process+=50;
+                                if (process==100) loadData();
                                 if (STAMINA<=0) {
-                                    Toast.makeText(getApplicationContext(),"Kiệt sức. Bạn cần nghỉ ngơi.", Toast.LENGTH_LONG).show();
-                                    //chạy chức năng sang ngày mới
+                                    Toast.makeText(getApplicationContext(),"Kiệt sức. Bạn cần nghỉ ngơi.", Toast.LENGTH_SHORT).show();
+                                    sangNgayMoi();
                                 }
                                 Log.d("TAG", "onSuccess: Update success");
                             })
                             .addOnFailureListener(e -> {
-                                Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được thông tin nông trại", Toast.LENGTH_LONG).show();
+                                loadData();
+                                Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được thông tin nông trại", Toast.LENGTH_SHORT).show();
+                                Log.d("TAG", "onFailure: Update fail");
                             });
                 }
             };
@@ -675,8 +913,8 @@ public class HappyFarmScreen extends AppCompatActivity {
                 @Override
                 public void run() {
                     db = FirebaseFirestore.getInstance();
-                    db.collection("ODat").document(USERID)
-                            .collection("ODatID").document(String.valueOf(oDatID))
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ODat").document(String.valueOf(oDatID))
                             .update("lamDat", false,
                                     "gieoHat",false,
                                     "tuoiNuoc", false,
@@ -684,10 +922,15 @@ public class HappyFarmScreen extends AppCompatActivity {
                                     "soNgayThuHoach",0,
                                     "sanLuongThuHoach",0)
                             .addOnSuccessListener(aVoid -> {
+                                tuoiNuoc=bonPhan=false;
+                                process+=50;
+                                if (process==100) loadData();
                                 Log.d("TAG", "onSuccess: Update success");
                             })
                             .addOnFailureListener(e -> {
-                                Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được trạng thái ô đất.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được trạng thái ô đất.", Toast.LENGTH_SHORT).show();
+                                loadData();
+                                Log.d("TAG", "onFailure: Update fail");
                             });
                 }
             };
@@ -695,45 +938,301 @@ public class HappyFarmScreen extends AppCompatActivity {
         }
     }
 
+    public void tuoiNuoc(int oDatID){
+        if (STAMINA>=10){
+            if (tuoiNuoc){
+                Toast.makeText(getApplicationContext(), "Tưới rồi mà, tưới nữa chết cây đó.", Toast.LENGTH_SHORT).show();
+            } else {
+                process=0;
+                //trừ thể lực
+                Thread truTheLuc = new Thread(){
+                    @SuppressLint("DefaultLocale")
+                    @Override
+                    public void run() {
+                        db = FirebaseFirestore.getInstance();
+                        db.collection("ThongTinTaiKhoan").document(USERID)
+                                .collection("ThongTinNongTrai").document("ThongTinNongTrai")
+                                .update("giaTriTheLuc",STAMINA-10)
+                                .addOnSuccessListener(aVoid -> {
+                                    process+=50;
+                                    if (process==100) loadData();
+                                    if (STAMINA<=0) {
+                                        Toast.makeText(getApplicationContext(),"Kiệt sức. Bạn cần nghỉ ngơi.", Toast.LENGTH_SHORT).show();
+                                        sangNgayMoi();
+                                    }
+                                    Log.d("TAG", "onSuccess: Update success");
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được thông tin nông trại", Toast.LENGTH_SHORT).show();
+                                    Log.d("TAG", "onFailure: Update fail");
+                                });
+                    }
+                };
+                truTheLuc.start();
 
+                //update thông tin ô đất
+                Thread tuoiNuoc = new Thread(){
+                    @Override
+                    public void run() {
+                        db = FirebaseFirestore.getInstance();
+                        db.collection("ThongTinTaiKhoan").document(USERID)
+                                .collection("ODat").document(String.valueOf(oDatID))
+                                .update("tuoiNuoc",true,
+                                        "sanLuongThuHoach",sanLuongThuHoach + sanLuongThuHoachBanDau/soNgayThuHoachBanDau)
+                                .addOnSuccessListener(aVoid -> {
+                                    process+=50;
+                                    if (process==100) loadData();
+                                    Log.d("TAG", "onSuccess: Update success");
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được trạng thái ô đất.", Toast.LENGTH_SHORT).show();
+                                    Log.d("TAG", "onFailure: Update fail");
+                                });
+                    }
+                };
+                tuoiNuoc.start();
 
-//    public void NangCapHatGiong(int ns_id){
-//        int level = 0;
-//        FirebaseFirestore db;
-//        db = FirebaseFirestore.getInstance();
-//
-//        //lấy dữ liệu ruộng
-//        String id = String.valueOf(ns_id);
-//        db.collection("RuongNongSan").document(USERID)
-//                .collection("NongSanID").document(id)
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            DocumentSnapshot document = task.getResult();
-//                            if (document.exists()) {
-//                                ruongNongSan = document.toObject(RuongNongSan.class);
-//
-//                            } else {
-//                                Log.d("TAG", "No such document");
-//                            }
-//                        } else {
-//                            Log.d("TAG", "get failed with ", task.getException());
-//                        }
-//
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.d("TAG", "onFailure: Load data fail" + e);
-//                    }
-//                });
-//        level = ruongNongSan.getLevelHatGiong();
-//        level++;
-//
-//
-//    }
+            }
+        }
+    }
+
+    public void bonPhan(int oDatID){
+        if (STAMINA>=10){
+            if (bonPhan){
+                Toast.makeText(getApplicationContext(), "Bón rồi mà, bón nữa chết cây đó.", Toast.LENGTH_SHORT).show();
+            } else {
+                process=0;
+                //trừ thể lực
+                Thread truTheLuc = new Thread(){
+                    @SuppressLint("DefaultLocale")
+                    @Override
+                    public void run() {
+                        db = FirebaseFirestore.getInstance();
+                        db.collection("ThongTinTaiKhoan").document(USERID)
+                                .collection("ThongTinNongTrai").document("ThongTinNongTrai")
+                                .update("giaTriTheLuc",STAMINA-10)
+                                .addOnSuccessListener(aVoid -> {
+                                    process+=50;
+                                    if (process==100) loadData();
+                                    if (STAMINA<=0) {
+                                        Toast.makeText(getApplicationContext(),"Kiệt sức. Bạn cần nghỉ ngơi.", Toast.LENGTH_SHORT).show();
+                                        //chạy chức năng sang ngày mới
+                                    }
+                                    Log.d("TAG", "onSuccess: Update success");
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được thông tin nông trại", Toast.LENGTH_SHORT).show();
+                                    Log.d("TAG", "onFailure: Update fail");
+                                });
+                    }
+                };
+                truTheLuc.start();
+
+                //update thông tin ô đất
+                Thread bonPhan = new Thread(){
+                    @Override
+                    public void run() {
+                        db = FirebaseFirestore.getInstance();
+                        db.collection("ThongTinTaiKhoan").document(USERID)
+                                .collection("ODat").document(String.valueOf(oDatID))
+                                .update("bonPhan",true,
+                                        "soNgayThuHoach",soNgayThuHoach-1)
+                                .addOnSuccessListener(aVoid -> {
+                                    process+=50;
+                                    if (process==100) loadData();
+                                    Log.d("TAG", "onSuccess: Update success");
+                                })
+                                .addOnFailureListener(e -> {
+                                    loadData();
+                                    Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được trạng thái ô đất.", Toast.LENGTH_SHORT).show();
+                                    Log.d("TAG", "onFailure: Update fail");
+                                });
+                    }
+                };
+                bonPhan.start();
+            }
+        }
+    }
+
+    public void sangNgayMoi(){
+        img_bg.setBackgroundResource(R.color.black);
+        process=0;
+        //reset giá trị thể lực
+        Thread resetTheLuc = new Thread(){
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void run() {
+                db = FirebaseFirestore.getInstance();
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("ThongTinNongTrai").document("ThongTinNongTrai")
+                        .update("giaTriTheLuc", 150)
+                        .addOnSuccessListener(aVoid -> {
+                            process+=40;
+                            if (process==100) {
+                                loadData();
+                                Toast.makeText(getApplicationContext(), "Sáng hôm sau...", Toast.LENGTH_SHORT).show();
+                            }
+                            Log.d("TAG", "onSuccess: Update success");
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được thông tin nông trại", Toast.LENGTH_SHORT).show();
+                            Log.d("TAG", "onFailure: Update fail");
+                        });
+            }
+        };
+        resetTheLuc.start();
+
+        //tải ds các ô đất đã gieo hạt
+        Thread sangNgayMoi = new Thread(){
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void run() {
+                db = FirebaseFirestore.getInstance();
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("ODat").whereEqualTo("gieoHat",true)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()){
+                                //noinspection ConstantConditions
+                                for (QueryDocumentSnapshot snapshot : task.getResult()){
+                                    ODat oDat = snapshot.toObject(ODat.class);
+                                    if (oDat.isGieoHat()) {
+                                        updateODat(oDat.getoDatID(),oDat.getSoNgayThuHoach());
+                                    }
+                                }
+                                process +=60;
+                                if (process==100) {
+                                    loadData();
+                                    Toast.makeText(getApplicationContext(), "Sáng hôm sau...", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(getApplicationContext(), "Lỗi!", Toast.LENGTH_SHORT).show();
+                            Log.d("Login", "onComplete: Load data error " + e.getMessage());
+                        });
+
+            }
+        };
+        sangNgayMoi.start();
+    }
+
+    public void updateODat(int oDatID, int soNgayThuHoach){
+        db = FirebaseFirestore.getInstance();
+        db.collection("ThongTinTaiKhoan").document(USERID)
+                .collection("ODat").document(String.valueOf(oDatID))
+                .update("tuoiNuoc", false,
+                        "bonPhan", false,
+                        "soNgayThuHoach", soNgayThuHoach - 1)
+                .addOnSuccessListener(aVoid -> Log.d("TAG", "onSuccess: Update success"))
+                .addOnFailureListener(e -> {
+                    process = -100;
+                    Toast.makeText(getApplicationContext(), "Lỗi không cập nhật được thông tin nông trại", Toast.LENGTH_SHORT).show();
+                    Log.d("TAG", "onFailure: Update fail");
+                });
+    }
+
+    @SuppressLint("DefaultLocale")
+    public void getODatUnlocked(int oDatID){
+        db = FirebaseFirestore.getInstance();
+        db.collection("ThongTinTaiKhoan").document(USERID)
+                .collection("ODat").whereEqualTo("moKhoa",true)
+                .get()
+                .addOnCompleteListener(task -> {
+                    O_DAT_UNLOCKED=0;
+                    if (task.isSuccessful()) {
+                        //noinspection ConstantConditions
+                        for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                            O_DAT_UNLOCKED++;
+                        }
+                        if (FARMCOIN >= 100*O_DAT_UNLOCKED){
+                            moKhoaODat(oDatID);
+                        } else {
+                            Toast.makeText(getApplicationContext(), String.format("Ô đất này cần %d tiền nông trại để mở khóa.", 100 * O_DAT_UNLOCKED), Toast.LENGTH_SHORT).show();
+                        }
+                    } else Log.d("TAG", "onComplete: Load data error " + task.getException());
+                })
+                .addOnFailureListener(e -> Log.d("TAG", "onFailure: Load data error " + e.getMessage()));
+    }
+
+    public void giaoHang(int position) {
+        DonHang donHang = donHangList.get(position);
+        switch (nongSanID) {
+            case 1:
+                if (LUA >= soLuongMua){
+                    db = FirebaseFirestore.getInstance();
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ThongTinNongTrai").document("ThongTinNongTrai")
+                            .update("tongTienNongTrai",FARMCOIN+tienHang,
+                                    "tongSoLuongLua",LUA-soLuongMua)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(getApplicationContext(),"Đã bán " + soLuongMua + " lúa", Toast.LENGTH_LONG).show();
+                                donHang.Create();
+                                donHangList.set(position,donHang);
+                                donHangAdapter = new DonHangAdapter(getApplicationContext(),donHangList);
+                                listView.setAdapter(donHangAdapter);
+                                Log.d("TAG", "onSuccess: Update success");
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được thông tin nông trại", Toast.LENGTH_LONG).show();
+                                Log.d("TAG", "onFailure: Update fail");
+                            });
+                } else Toast.makeText(getApplicationContext(), "Không đủ lúa!", Toast.LENGTH_SHORT).show();
+                break;
+            case 2:
+                if (CACHUA >= donHang.getSoLuongMua()){
+                    db = FirebaseFirestore.getInstance();
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ThongTinNongTrai").document("ThongTinNongTrai")
+                            .update("tongTienNongTrai",FARMCOIN+tienHang,
+                                    "tongSoLuongLua",CACHUA-soLuongMua)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(getApplicationContext(),"Đã bán " + soLuongMua + " cà chua", Toast.LENGTH_LONG).show();
+                                donHang.Create();
+                                donHangList.set(position,donHang);
+                                donHangAdapter = new DonHangAdapter(getApplicationContext(),donHangList);
+                                listView.setAdapter(donHangAdapter);
+                                Log.d("TAG", "onSuccess: Update success");
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được thông tin nông trại", Toast.LENGTH_LONG).show();
+                                Log.d("TAG", "onFailure: Update fail");
+                            });
+
+                } else Toast.makeText(getApplicationContext(), "Không đủ cà chua!", Toast.LENGTH_SHORT).show();
+                break;
+            case 3:
+                if (CAROT >= donHang.getSoLuongMua()){
+                    db = FirebaseFirestore.getInstance();
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ThongTinNongTrai").document("ThongTinNongTrai")
+                            .update("tongTienNongTrai",FARMCOIN+tienHang,
+                                    "tongSoLuongLua",CAROT-soLuongMua)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(getApplicationContext(),"Đã bán " + soLuongMua + " cà rốt", Toast.LENGTH_LONG).show();
+                                donHang.Create();
+                                donHangList.set(position,donHang);
+                                donHangAdapter = new DonHangAdapter(getApplicationContext(),donHangList);
+                                listView.setAdapter(donHangAdapter);
+                                Log.d("TAG", "onSuccess: Update success");
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(getApplicationContext(),"Lỗi không cập nhật được thông tin nông trại", Toast.LENGTH_LONG).show();
+                                Log.d("TAG", "onFailure: Update fail");
+                            });
+                } else Toast.makeText(getApplicationContext(), "Không đủ cà rốt!", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + donHang.getNongSanID());
+        }
+    }
+
+    public void boQua(int position){
+        DonHang donHang = donHangList.get(position);
+        donHang.Create();
+        donHangList.set(position,donHang);
+        donHangAdapter = new DonHangAdapter(getApplicationContext(),donHangList);
+        listView.setAdapter(donHangAdapter);
+    }
 
 }

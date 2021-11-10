@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import static com.example.happyfarm.LoginScreen.USERID;
 
 public class RuongNongSan {
-    private String uID;
+//    private String uID;
     private int nongSanID; //1-lua, 2-cachua, 3carot
     private int levelHatGiong;
     private int soNgayThuHoach;
@@ -25,20 +25,11 @@ public class RuongNongSan {
 
     public RuongNongSan(){}
 
-    public RuongNongSan(String uID, int nongSanID, int levelHatGiong, int soNgayThuHoach, int sanLuongThuHoach) {
-        this.uID = uID;
+    public RuongNongSan(int nongSanID, int levelHatGiong, int soNgayThuHoach, int sanLuongThuHoach) {
         this.nongSanID = nongSanID;
         this.levelHatGiong = levelHatGiong;
         this.soNgayThuHoach = soNgayThuHoach;
         this.sanLuongThuHoach = sanLuongThuHoach;
-    }
-
-    public String getuID() {
-        return uID;
-    }
-
-    public void setuID(String uID) {
-        this.uID = uID;
     }
 
     public int getNongSanID() {
@@ -72,28 +63,4 @@ public class RuongNongSan {
     public void setSanLuongThuHoach(int sanLuongThuHoach) {
         this.sanLuongThuHoach = sanLuongThuHoach;
     }
-
-    /*
-    public void Update(FirebaseFirestore db){
-//        FirebaseFirestore db;
-//        db = FirebaseFirestore.getInstance();
-
-        String ns_id = String.valueOf(this.getNongSanID());
-        db.collection("RuongNongSan").document(USERID)
-                .collection("NongSanID").document(ns_id)
-                .update("soNgayThuHoach",this.getSoNgayThuHoach(),
-                        "sanLuongThuHoach",this.getSanLuongThuHoach())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("TAG", "onSuccess: Add role success");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", "onFailure: " + e.getMessage());
-                    }
-                });
-    }*/
 }

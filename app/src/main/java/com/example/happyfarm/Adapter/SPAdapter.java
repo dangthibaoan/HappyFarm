@@ -66,11 +66,6 @@ public class SPAdapter extends BaseAdapter {
         TextView txtDes = convertView.findViewById(R.id.txtMota);
         txtDes.setText(sanPham.getMoTaSanPham());
 
-        Button btnMua = convertView.findViewById(R.id.btnPay);
-        btnMua.setText(sanPham.getDonGia());
-
-        btnMua.setEnabled(!sanPham.isTrangThaiSanPham());
-
         return convertView;
     }
 }

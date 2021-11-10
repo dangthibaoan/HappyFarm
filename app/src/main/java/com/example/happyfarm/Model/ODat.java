@@ -1,23 +1,6 @@
 package com.example.happyfarm.Model;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import static com.example.happyfarm.LoginScreen.CACHUA;
-import static com.example.happyfarm.LoginScreen.CAROT;
-import static com.example.happyfarm.LoginScreen.FARMCOIN;
-import static com.example.happyfarm.LoginScreen.LUA;
-import static com.example.happyfarm.LoginScreen.STAMINA;
-import static com.example.happyfarm.LoginScreen.USERID;
-import static com.example.happyfarm.EnterGameActivity.O_DAT_UNLOCKED;
-
 public class ODat {
-    private String uID;         //uid của player
     private int oDatID;         //11,12,13,14 - lúa; 21,22,23,24 - cà chua; 31,32,33,34 - cà rốt
     private boolean moKhoa;
     private boolean lamDat;
@@ -29,8 +12,7 @@ public class ODat {
 
     public ODat() { }
 
-    public ODat(String uID,
-                int oDatID,
+    public ODat(int oDatID,
                 boolean moKhoa,
                 boolean lamDat,
                 boolean gieoHat,
@@ -39,7 +21,6 @@ public class ODat {
                 int soNgayThuHoach,
                 int sanLuongThuHoach)
     {
-        this.uID = uID;
         this.oDatID = oDatID;
         this.moKhoa = moKhoa;
         this.lamDat = lamDat;
@@ -48,14 +29,6 @@ public class ODat {
         this.bonPhan = bonPhan;
         this.soNgayThuHoach = soNgayThuHoach;
         this.sanLuongThuHoach = sanLuongThuHoach;
-    }
-
-    public String getuID() {
-        return uID;
-    }
-
-    public void setuID(String uID) {
-        this.uID = uID;
     }
 
     public int getoDatID() {
@@ -123,7 +96,6 @@ public class ODat {
     }
 
     public void Create(int oDatID){
-        this.setuID(USERID);
         this.setoDatID(oDatID);
         this.setMoKhoa(false);
         this.setLamDat(false);

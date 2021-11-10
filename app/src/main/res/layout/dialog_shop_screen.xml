@@ -5,8 +5,7 @@
     android:padding="20dp"
     android:background="@drawable/bg_01"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ShopScreen">
+    android:layout_height="match_parent" >
 
     <TextView
         android:id="@+id/txtUID"
@@ -38,12 +37,23 @@
 
     <ListView
         android:id="@+id/lvSanpham"
+        android:listSelector="@drawable/list_item_selector"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="350dp"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnMua"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgCoin" />
+
+    <Button
+        android:id="@+id/btnMua"
+        android:text="Mua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lvSanpham"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

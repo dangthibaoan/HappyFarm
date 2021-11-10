@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="30dp"
+    android:background="@drawable/bg_02"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ListView
+        android:id="@+id/lvDonHang"
+        android:listSelector="@drawable/list_item_selector"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"/>
+
+    <TableRow
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imgBoqua"
+            android:src="@drawable/ic_cancel"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@string/img" />
+        <ImageView
+            android:id="@+id/imgGiaohang"
+            android:src="@drawable/ic_ok"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:contentDescription="@string/img" />
+    </TableRow>
+</LinearLayout>

@@ -38,8 +38,6 @@ import static java.lang.Math.log;
 
 public class EnterGameActivity extends AppCompatActivity {
 
-    public static int O_DAT_UNLOCKED;
-
     FirebaseFirestore db;
     TextView tv1, tv2;
     String flag;
@@ -89,9 +87,9 @@ public class EnterGameActivity extends AppCompatActivity {
             public void run() {
                 db = FirebaseFirestore.getInstance();
                 ThongTinTaiKhoan accInfor = new ThongTinTaiKhoan();
-                accInfor.setuID(USERID);
                 accInfor.Create();
-                db.collection("ThongTinNongTrai").document(USERID)
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                         .set(accInfor, SetOptions.merge())
                         .addOnSuccessListener(unused -> {
                             process+=13;
@@ -108,10 +106,10 @@ public class EnterGameActivity extends AppCompatActivity {
             @Override
             public void run() {
                 db = FirebaseFirestore.getInstance();
-                RuongNongSan ns_lua = new RuongNongSan(USERID,1,1,5,10);
-//                String ns_lua_id = String.valueOf(ns_lua.getNongSanID());
-                db.collection("RuongNongSan").document(USERID)
-                        .collection("NongSanID").document(String.valueOf(ns_lua.getNongSanID()))
+
+                RuongNongSan ns_lua = new RuongNongSan(1,1,5,10);
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("RuongNongSan").document(String.valueOf(ns_lua.getNongSanID()))
                         .set(ns_lua, SetOptions.merge())
                         .addOnSuccessListener(unused -> {
                             process+=7;
@@ -119,10 +117,9 @@ public class EnterGameActivity extends AppCompatActivity {
                             if (process==100) getData();
                         });
 
-                RuongNongSan ns_cachua = new RuongNongSan(USERID,2,1,7,11);
-//                String ns_cachua_id = String.valueOf(ns_lua.getNongSanID());
-                db.collection("RuongNongSan").document(USERID)
-                        .collection("NongSanID").document(String.valueOf(ns_cachua.getNongSanID()))
+                RuongNongSan ns_cachua = new RuongNongSan(2,1,7,11);
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("RuongNongSan").document(String.valueOf(ns_cachua.getNongSanID()))
                         .set(ns_cachua, SetOptions.merge())
                         .addOnSuccessListener(unused -> {
                             process+=7;
@@ -130,10 +127,9 @@ public class EnterGameActivity extends AppCompatActivity {
                             if (process==100) getData();
                         });
 
-                RuongNongSan ns_carot = new RuongNongSan(USERID,3,1,9,12);
-//                String ns_carot_id = String.valueOf(ns_lua.getNongSanID());
-                db.collection("RuongNongSan").document(USERID)
-                        .collection("NongSanID").document(String.valueOf(ns_carot.getNongSanID()))
+                RuongNongSan ns_carot = new RuongNongSan(3,1,9,12);
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("RuongNongSan").document(String.valueOf(ns_carot.getNongSanID()))
                         .set(ns_carot, SetOptions.merge())
                         .addOnSuccessListener(unused -> {
                             process+=7;
@@ -144,43 +140,43 @@ public class EnterGameActivity extends AppCompatActivity {
         };
         t2.start();
 
-        //đưa dữ liệu ô đất lên firestore       12
+        //đưa dữ liệu ô đất lên firestore       12 +24
         t3 = new Thread(){
             @SuppressLint("DefaultLocale")
             @Override
             public void run() {
                 db = FirebaseFirestore.getInstance();
                 for (int i=1; i<5;i++) {
-                    ODat lua = new ODat(USERID, 10 + i, false, false, false, false, false, 0, 0);
+                    ODat lua = new ODat();
                     lua.Create(10+i);
                     if (i==1) lua.setMoKhoa(true);
-                    db.collection("ODat").document(USERID)
-                            .collection("ODatID").document(String.valueOf(lua.getoDatID()))
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ODat").document(String.valueOf(lua.getoDatID()))
                             .set(lua, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
-                                process+=1;
+                                process+=3;
                                 tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
                                 if (process==100) getData();
                             });
 
-                    ODat cachua = new ODat(USERID, 20 + i, false, false, false, false, false, 0, 0);
+                    ODat cachua = new ODat();
                     cachua.Create(20+i);
-                    db.collection("ODat").document(USERID)
-                            .collection("ODatID").document(String.valueOf(cachua.getoDatID()))
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ODat").document(String.valueOf(cachua.getoDatID()))
                             .set(cachua, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
-                                process+=1;
+                                process+=3;
                                 tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
                                 if (process==100) getData();
                             });
 
-                    ODat carot = new ODat(USERID, 30 + i, false, false, false, false, false, 0, 0);
+                    ODat carot = new ODat();
                     carot.Create(30+i);
-                    db.collection("ODat").document(USERID)
-                            .collection("ODatID").document(String.valueOf(carot.getoDatID()))
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ODat").document(String.valueOf(carot.getoDatID()))
                             .set(carot, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
-                                process+=1;
+                                process+=3;
                                 tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
                                 if (process==100) getData();
                             });
@@ -190,28 +186,27 @@ public class EnterGameActivity extends AppCompatActivity {
         t3.start();
 
         //đưa dữ liệu đơn hàng lên firestore        24
-        t4 = new Thread(){
-            @SuppressLint("DefaultLocale")
-            @Override
-            public void run() {
-                db = FirebaseFirestore.getInstance();
-                for(int ii=0;ii<12;ii++){
-                    DonHang donHang = new DonHang();
-                    donHang.setUid(USERID);
-                    donHang.setDonHangID(ii);
-                    donHang.Create();
-                    db.collection("DonHang").document(USERID)
-                            .collection("DonHangID").document(String.valueOf(donHang.getDonHangID()))
-                            .set(donHang, SetOptions.merge())
-                            .addOnSuccessListener(unused -> {
-                                process+=2;
-                                tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-                                if (process==100) getData();
-                            });
-                }
-            }
-        };
-        t4.start();
+//        t4 = new Thread(){
+//            @SuppressLint("DefaultLocale")
+//            @Override
+//            public void run() {
+//                db = FirebaseFirestore.getInstance();
+//                for(int ii=0;ii<12;ii++){
+//                    DonHang donHang = new DonHang();
+//                    donHang.setDonHangID(ii);
+//                    donHang.Create();
+//                    db.collection("ThongTinTaiKhoan").document(USERID)
+//                            .collection("DonHang").document(String.valueOf(donHang.getDonHangID()))
+//                            .set(donHang, SetOptions.merge())
+//                            .addOnSuccessListener(unused -> {
+//                                process+=2;
+//                                tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
+//                                if (process==100) getData();
+//                            });
+//                }
+//            }
+//        };
+//        t4.start();
 
         //đưa dữ liệu shop hạt giống lên firestore      30
         t5 = new Thread(){
@@ -220,10 +215,10 @@ public class EnterGameActivity extends AppCompatActivity {
             public void run() {
                 db = FirebaseFirestore.getInstance();
                 for (int sp=1; sp<6; sp++) {
-                    SanPham sp_lua = new SanPham(USERID, 10 + sp, "Hạt lúa giống cấp " + sp, "img_lua", "Nâng sản lượng thu hoạch lúa từ " + 10 * (sp - 1) + " lên " + 10 * sp, 20 * sp, false);
+                    SanPham sp_lua = new SanPham(10 + sp, "Hạt lúa giống cấp " + sp, "img_lua", "Nâng sản lượng thu hoạch lúa từ " + 10 * (sp - 1) + " lên " + 10 * sp, 20 * sp, false);
                     String sp_id = String.valueOf(sp_lua.getSanPhamID());
-                    db.collection("Shop").document(USERID)
-                            .collection("SanPhamID").document(sp_id)
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("Shop").document(sp_id)
                             .set(sp_lua, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
                                 process+=2;
@@ -231,10 +226,10 @@ public class EnterGameActivity extends AppCompatActivity {
                                 if (process==100) getData();
                             });
 
-                    SanPham sp_cachua = new SanPham(USERID, 20 + sp, "Hạt cà chua giống cấp " + sp, "img_cachua", "Nâng sản lượng thu hoạch cà chua từ " + 11 * (sp - 1) + " lên " + 11 * sp, 25 * sp, false);
+                    SanPham sp_cachua = new SanPham(20 + sp, "Hạt cà chua giống cấp " + sp, "img_cachua", "Nâng sản lượng thu hoạch cà chua từ " + 11 * (sp - 1) + " lên " + 11 * sp, 25 * sp, false);
                     sp_id = String.valueOf(sp_cachua.getSanPhamID());
-                    db.collection("Shop").document(USERID)
-                            .collection("SanPhamID").document(sp_id)
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("Shop").document(sp_id)
                             .set(sp_cachua, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
                                 process+=2;
@@ -242,10 +237,10 @@ public class EnterGameActivity extends AppCompatActivity {
                                 if (process==100) getData();
                             });
 
-                    SanPham sp_carot = new SanPham(USERID, 30 + sp, "Hạt cà rốt giống cấp " + sp, "img_carot", "Nâng sản lượng thu hoạch cà rốt từ " + 12 * (sp - 1) + " lên " + 12 * sp, 20 * sp, false);
+                    SanPham sp_carot = new SanPham(30 + sp, "Hạt cà rốt giống cấp " + sp, "img_carot", "Nâng sản lượng thu hoạch cà rốt từ " + 12 * (sp - 1) + " lên " + 12 * sp, 20 * sp, false);
                     sp_id = String.valueOf(sp_carot.getSanPhamID());
-                    db.collection("Shop").document(USERID)
-                            .collection("SanPhamID").document(sp_id)
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("Shop").document(sp_id)
                             .set(sp_carot, SetOptions.merge())
                             .addOnSuccessListener(unused -> {
                                 process+=2;
@@ -260,50 +255,24 @@ public class EnterGameActivity extends AppCompatActivity {
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     public void getData(){
+        tv2.setText(String.format("Đang tải dữ liệu nông trại...", process));
         process=0;
+
         db = FirebaseFirestore.getInstance();
-        db.collection("ThongTinNongTrai").document(USERID)
+        db.collection("ThongTinTaiKhoan").document(USERID)
+                .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     ThongTinTaiKhoan accInfor = documentSnapshot.toObject(ThongTinTaiKhoan.class);
                     assert accInfor != null;
                     setUp(accInfor.getTongTienNongTrai(), accInfor.getExpLevel(), accInfor.getGiaTriTheLuc(), accInfor.getTongSoLuongLua(), accInfor.getTongSoluongCachua(), accInfor.getTongSoLuongCaRot());
-                    process+=50;
-                    tv2.setText(String.format("Đang tải dữ liệu nông trại, tiến độ %d (%%)", process));
-                    if (process==100) startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
+                    startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         process=-100;
                         tv2.setText("Tải dữ liệu nông trại thất bại.");
-                    }
-                });
-        O_DAT_UNLOCKED=0;
-        db.collection("ODat").document(USERID)
-                .collection("ODatID").whereEqualTo("moKhoa",true)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            //noinspection ConstantConditions
-                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                                O_DAT_UNLOCKED++;
-                            }
-                            process+=50;
-                            tv2.setText(String.format("Đang tải dữ liệu nông trại, tiến độ %d (%%)", process));
-                            if (process==100) startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
-                        } else {
-                            Log.d("TAG", "onComplete: Load data error " + task.getException());
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        process=-100;
-                        tv2.setText("Tải dữ liệu thất bại.");
                     }
                 });
     }

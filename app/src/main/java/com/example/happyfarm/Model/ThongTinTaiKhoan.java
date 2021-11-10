@@ -9,7 +9,6 @@ import static com.example.happyfarm.LoginScreen.STAMINA;
 import static com.example.happyfarm.LoginScreen.USERID;
 
 public class ThongTinTaiKhoan {
-    private String uID;
     private int tongTienNongTrai;
     private int expLevel;
     private int giaTriTheLuc;
@@ -25,14 +24,6 @@ public class ThongTinTaiKhoan {
 
     public void setTongTienNongTrai(int tongTienNongTrai) {
         this.tongTienNongTrai = tongTienNongTrai;
-    }
-
-    public String getuID() {
-        return uID;
-    }
-
-    public void setuID(String uID) {
-        this.uID = uID;
     }
 
     public int getExpLevel() {
@@ -76,8 +67,7 @@ public class ThongTinTaiKhoan {
     }
 
     public void Create(){
-        this.setuID(USERID);
-        this.setTongTienNongTrai(0);
+        this.setTongTienNongTrai(150);
         this.setExpLevel(0);
         this.setGiaTriTheLuc(150);
         this.setTongSoLuongLua(0);
@@ -85,8 +75,7 @@ public class ThongTinTaiKhoan {
         this.setTongSoLuongCaRot(0);
     }
 
-    public void GetData(){
-        this.setuID(USERID);
+    public void SetData(){
         this.setTongTienNongTrai(FARMCOIN);
         this.setExpLevel(FARMEXP);
         this.setGiaTriTheLuc(STAMINA);

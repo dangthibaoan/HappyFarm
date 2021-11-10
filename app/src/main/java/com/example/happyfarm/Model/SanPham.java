@@ -1,19 +1,8 @@
 package com.example.happyfarm.Model;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import static com.example.happyfarm.LoginScreen.USERID;
-
 public class SanPham {
-    private String uid;
     private int sanPhamID;
-    private String tenSanPham;          //hạt giống cấp n, nước tăng lực +50 giá trị thể lực
+    private String tenSanPham;          //hạt giống cấp n
     private String anhMinhHoa;
     private String moTaSanPham;
     private int donGia;
@@ -21,22 +10,13 @@ public class SanPham {
 
     public SanPham(){}
 
-    public SanPham(String uid, int sanPhamID, String tenSanPham, String anhMinhHoa, String moTaSanPham, int donGia, boolean trangThaiSanPham) {
-        this.uid = uid;
+    public SanPham(int sanPhamID, String tenSanPham, String anhMinhHoa, String moTaSanPham, int donGia, boolean trangThaiSanPham) {
         this.sanPhamID = sanPhamID;
         this.tenSanPham = tenSanPham;
         this.anhMinhHoa = anhMinhHoa;
         this.moTaSanPham = moTaSanPham;
         this.donGia = donGia;
         this.trangThaiSanPham = trangThaiSanPham;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public int getSanPhamID() {
@@ -87,25 +67,4 @@ public class SanPham {
         this.trangThaiSanPham = trangThaiSanPham;
     }
 
-    public void Mua(FirebaseFirestore db){
-//        FirebaseFirestore db;
-//        db = FirebaseFirestore.getInstance();
-
-        String sp_id = String.valueOf(this.getSanPhamID());
-        db.collection("Shop").document(USERID)
-                .collection("SanPhamID").document(sp_id)
-                .update("trangThaiSanPham",true)//sửa lại trạng thái sản phẩm, true: đã mua, false: chưa mua
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("TAG", "onSuccess: Add role success");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", "onFailure: " + e.getMessage());
-                    }
-                });
-    }
 }

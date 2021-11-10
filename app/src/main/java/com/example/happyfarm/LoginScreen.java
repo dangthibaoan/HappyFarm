@@ -64,7 +64,7 @@ public class LoginScreen extends AppCompatActivity {
                         String pass = pwd.getText().toString().trim();
                         String rePass = repwd.getText().toString().trim();
                         db = FirebaseFirestore.getInstance();
-                        db.collection("User").whereEqualTo("usn", loginName)
+                        db.collection("USER").whereEqualTo("usn", loginName)
                                 .get()
                                 .addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
@@ -115,7 +115,7 @@ public class LoginScreen extends AppCompatActivity {
             accDemo.Register(loginName,pass);
             //đưa acc lên firestore
             db = FirebaseFirestore.getInstance();
-            db.collection("User").document(accDemo.getUid())
+            db.collection("USER").document(accDemo.getUid())
                     .set(accDemo, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> {
                         USERID = accDemo.getUid();
@@ -126,7 +126,7 @@ public class LoginScreen extends AppCompatActivity {
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(getApplicationContext(),"Đăng ký acc thất bại.", Toast.LENGTH_LONG).show();
-                        Log.d("TAG", "onFailure: Add food error " + e);
+                        Log.d("TAG", "onFailure: Add acc error " + e);
                     });
         }
     }
@@ -134,17 +134,23 @@ public class LoginScreen extends AppCompatActivity {
     //đăng nhập
     public void doLogin(String loginName, String pass) {
         db = FirebaseFirestore.getInstance();
-        db.collection("User")
+        db.collection("USER").whereEqualTo("usn",loginName)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
                             TaiKhoan user = snapshot.toObject(TaiKhoan.class);
-                            if (loginName.equals(user.getUsn()) && pass.equals(user.getPwd())){
-                                loginStatus=true;
-                                btnLogin.setEnabled(true);
-                                USERID = user.getUid();
-                                USERNAME = user.getUsn();
+                            if (pass.equals(user.getPwd())){
+                                if (user.getUid().equals("0000")){
+                                    Toast.makeText(getApplicationContext(), "Tài khoản này không có dữ liệu!", Toast.LENGTH_SHORT).show();
+                                    return;
+                                } else {
+                                    loginStatus=true;
+                                    btnLogin.setEnabled(true);
+                                    USERID = user.getUid();
+                                    USERNAME = user.getUsn();
+                                    break;
+                                }
                             } else
                                 loginStatus=false;
                         }

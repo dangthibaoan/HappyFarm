@@ -1,14 +1,11 @@
 package com.example.happyfarm.Model;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.example.happyfarm.LoginScreen.FARMLEVEL;
-import static com.example.happyfarm.LoginScreen.USERID;
 
 public class DonHang {
-    private String uid;
+    //private String uid;
     private int donHangID;
     private int nongSanID;
     private int soLuongMua;
@@ -16,20 +13,11 @@ public class DonHang {
 
     public DonHang(){}
 
-    public DonHang(String uid, int donHangID, int nongSanID, int soLuongMua, int tienHang) {
-        this.uid = uid;
+    public DonHang(int donHangID, int nongSanID, int soLuongMua, int tienHang) {
         this.donHangID = donHangID;
         this.nongSanID = nongSanID;
         this.soLuongMua = soLuongMua;
         this.tienHang = tienHang;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public int getDonHangID() {
