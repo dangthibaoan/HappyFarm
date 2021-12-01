@@ -26,7 +26,6 @@ import java.util.Objects;
 
 public class LoginScreen extends AppCompatActivity {
     public static String USERNAME, USERID;
-    public static int FARMCOIN, FARMLEVEL, FARMEXP, STAMINA, LUA, CACHUA, CAROT;
 
     Button btnLogin, btnReg;
     EditText usn, pwd, repwd;

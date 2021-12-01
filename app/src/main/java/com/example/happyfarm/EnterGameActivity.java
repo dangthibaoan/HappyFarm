@@ -3,38 +3,23 @@ package com.example.happyfarm;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.happyfarm.Model.DonHang;
 import com.example.happyfarm.Model.ODat;
 import com.example.happyfarm.Model.RuongNongSan;
 import com.example.happyfarm.Model.SanPham;
 import com.example.happyfarm.Model.ThongTinTaiKhoan;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.Objects;
 
-import static com.example.happyfarm.LoginScreen.CACHUA;
-import static com.example.happyfarm.LoginScreen.CAROT;
-import static com.example.happyfarm.LoginScreen.FARMCOIN;
-import static com.example.happyfarm.LoginScreen.FARMEXP;
-import static com.example.happyfarm.LoginScreen.LUA;
-import static com.example.happyfarm.LoginScreen.STAMINA;
+import static com.example.happyfarm.HappyFarmScreen.setUp;
 import static com.example.happyfarm.LoginScreen.USERID;
-import static java.lang.Math.log;
 
 public class EnterGameActivity extends AppCompatActivity {
 
@@ -65,19 +50,10 @@ public class EnterGameActivity extends AppCompatActivity {
         if (flag.equals("Login")) getData();
     }
 
-    public static void setUp(int fCoin, int exp, int sta, int lua, int cachua, int carot){
-        FARMCOIN = fCoin;
-        FARMEXP = exp;
-        double kq = (log((exp / 100) + 1) / log(2));
-        LoginScreen.FARMLEVEL = (int) kq;
-        STAMINA = sta;
-        LUA = lua;
-        CACHUA = cachua;
-        CAROT = carot;
-    }
+
 
     public void pushData(){
-        Thread t1, t2, t3, t4, t5;
+        Thread t1, t2, t3, t5;
 
         process=0;
         //đưa dữ liệu nông trại lên firestore
@@ -185,29 +161,6 @@ public class EnterGameActivity extends AppCompatActivity {
         };
         t3.start();
 
-        //đưa dữ liệu đơn hàng lên firestore        24
-//        t4 = new Thread(){
-//            @SuppressLint("DefaultLocale")
-//            @Override
-//            public void run() {
-//                db = FirebaseFirestore.getInstance();
-//                for(int ii=0;ii<12;ii++){
-//                    DonHang donHang = new DonHang();
-//                    donHang.setDonHangID(ii);
-//                    donHang.Create();
-//                    db.collection("ThongTinTaiKhoan").document(USERID)
-//                            .collection("DonHang").document(String.valueOf(donHang.getDonHangID()))
-//                            .set(donHang, SetOptions.merge())
-//                            .addOnSuccessListener(unused -> {
-//                                process+=2;
-//                                tv2.setText(String.format("Đang thiết lập dữ liệu, tiến độ %d (%%)", process));
-//                                if (process==100) getData();
-//                            });
-//                }
-//            }
-//        };
-//        t4.start();
-
         //đưa dữ liệu shop hạt giống lên firestore      30
         t5 = new Thread(){
             @SuppressLint("DefaultLocale")
@@ -216,6 +169,7 @@ public class EnterGameActivity extends AppCompatActivity {
                 db = FirebaseFirestore.getInstance();
                 for (int sp=1; sp<6; sp++) {
                     SanPham sp_lua = new SanPham(10 + sp, "Hạt lúa giống cấp " + sp, "img_lua", "Nâng sản lượng thu hoạch lúa từ " + 10 * (sp - 1) + " lên " + 10 * sp, 20 * sp, false);
+                    if (sp!=2) sp_lua.setTrangThaiSanPham(true);
                     String sp_id = String.valueOf(sp_lua.getSanPhamID());
                     db.collection("ThongTinTaiKhoan").document(USERID)
                             .collection("Shop").document(sp_id)
@@ -227,6 +181,7 @@ public class EnterGameActivity extends AppCompatActivity {
                             });
 
                     SanPham sp_cachua = new SanPham(20 + sp, "Hạt cà chua giống cấp " + sp, "img_cachua", "Nâng sản lượng thu hoạch cà chua từ " + 11 * (sp - 1) + " lên " + 11 * sp, 25 * sp, false);
+                    if (sp!=2) sp_cachua.setTrangThaiSanPham(true);
                     sp_id = String.valueOf(sp_cachua.getSanPhamID());
                     db.collection("ThongTinTaiKhoan").document(USERID)
                             .collection("Shop").document(sp_id)
@@ -239,6 +194,7 @@ public class EnterGameActivity extends AppCompatActivity {
 
                     SanPham sp_carot = new SanPham(30 + sp, "Hạt cà rốt giống cấp " + sp, "img_carot", "Nâng sản lượng thu hoạch cà rốt từ " + 12 * (sp - 1) + " lên " + 12 * sp, 20 * sp, false);
                     sp_id = String.valueOf(sp_carot.getSanPhamID());
+                    if (sp!=2) sp_carot.setTrangThaiSanPham(true);
                     db.collection("ThongTinTaiKhoan").document(USERID)
                             .collection("Shop").document(sp_id)
                             .set(sp_carot, SetOptions.merge())
@@ -255,7 +211,7 @@ public class EnterGameActivity extends AppCompatActivity {
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     public void getData(){
-        tv2.setText(String.format("Đang tải dữ liệu nông trại...", process));
+        tv2.setText(String.format("Đang tải dữ liệu nông trại... %d", process));
         process=0;
 
         db = FirebaseFirestore.getInstance();
@@ -268,12 +224,9 @@ public class EnterGameActivity extends AppCompatActivity {
                     setUp(accInfor.getTongTienNongTrai(), accInfor.getExpLevel(), accInfor.getGiaTriTheLuc(), accInfor.getTongSoLuongLua(), accInfor.getTongSoluongCachua(), accInfor.getTongSoLuongCaRot());
                     startActivity(new Intent(EnterGameActivity.this,HappyFarmScreen.class));
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        process=-100;
-                        tv2.setText("Tải dữ liệu nông trại thất bại.");
-                    }
+                .addOnFailureListener(e -> {
+                    process=-100;
+                    tv2.setText("Tải dữ liệu nông trại thất bại.");
                 });
     }
 }

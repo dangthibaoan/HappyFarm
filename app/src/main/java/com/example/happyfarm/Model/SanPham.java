@@ -6,7 +6,7 @@ public class SanPham {
     private String anhMinhHoa;
     private String moTaSanPham;
     private int donGia;
-    private boolean trangThaiSanPham;
+    private boolean trangThaiSanPham;   //true: đã mua, false: chưa mua
 
     public SanPham(){}
 

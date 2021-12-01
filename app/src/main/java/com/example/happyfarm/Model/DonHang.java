@@ -2,10 +2,9 @@ package com.example.happyfarm.Model;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.example.happyfarm.LoginScreen.FARMLEVEL;
+import static com.example.happyfarm.HappyFarmScreen.FARMLEVEL;
 
 public class DonHang {
-    //private String uid;
     private int donHangID;
     private int nongSanID;
     private int soLuongMua;

@@ -1,13 +1,5 @@
 package com.example.happyfarm.Model;
 
-import static com.example.happyfarm.LoginScreen.CACHUA;
-import static com.example.happyfarm.LoginScreen.CAROT;
-import static com.example.happyfarm.LoginScreen.FARMCOIN;
-import static com.example.happyfarm.LoginScreen.FARMEXP;
-import static com.example.happyfarm.LoginScreen.LUA;
-import static com.example.happyfarm.LoginScreen.STAMINA;
-import static com.example.happyfarm.LoginScreen.USERID;
-
 public class ThongTinTaiKhoan {
     private int tongTienNongTrai;
     private int expLevel;
@@ -75,12 +67,4 @@ public class ThongTinTaiKhoan {
         this.setTongSoLuongCaRot(0);
     }
 
-    public void SetData(){
-        this.setTongTienNongTrai(FARMCOIN);
-        this.setExpLevel(FARMEXP);
-        this.setGiaTriTheLuc(STAMINA);
-        this.setTongSoLuongLua(LUA);
-        this.setTongSoluongCachua(CACHUA);
-        this.setTongSoLuongCaRot(CAROT);
-    }
 }
