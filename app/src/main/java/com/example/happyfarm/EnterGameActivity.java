@@ -64,7 +64,8 @@ public class EnterGameActivity extends AppCompatActivity {
                 db = FirebaseFirestore.getInstance();
                 ThongTinTaiKhoan accInfor = new ThongTinTaiKhoan();
                 accInfor.Create();
-                db.collection("ThongTinNongTrai").document(USERID)
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                         .set(accInfor, SetOptions.merge())
                         .addOnSuccessListener(unused -> {
                             process+=13;
@@ -214,7 +215,8 @@ public class EnterGameActivity extends AppCompatActivity {
         process=0;
 
         db = FirebaseFirestore.getInstance();
-        db.collection("ThongTinNongTrai").document(USERID)
+        db.collection("ThongTinTaiKhoan").document(USERID)
+                .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     ThongTinTaiKhoan accInfor = documentSnapshot.toObject(ThongTinTaiKhoan.class);

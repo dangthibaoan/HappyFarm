@@ -148,7 +148,8 @@ public class HappyFarmScreen extends AppCompatActivity {
             @Override
             public void run() {
                 //lấy dữ liệu thông tin nông trại
-                db.collection("ThongTinNongTrai").document(USERID)
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                         .get()
                         .addOnSuccessListener(documentSnapshot -> {
                             ThongTinTaiKhoan accInfor = documentSnapshot.toObject(ThongTinTaiKhoan.class);
@@ -160,7 +161,8 @@ public class HappyFarmScreen extends AppCompatActivity {
             }
         };
         thread.start();
-        db.collection("ThongTinNongTrai").document(USERID)
+        db.collection("ThongTinTaiKhoan").document(USERID)
+                .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                 .addSnapshotListener((value, error) -> {
                     ThongTinTaiKhoan accInfor = Objects.requireNonNull(value).toObject(ThongTinTaiKhoan.class);
                     assert accInfor != null;
@@ -386,7 +388,8 @@ public class HappyFarmScreen extends AppCompatActivity {
                             @Override
                             public void run() {
                                 db = FirebaseFirestore.getInstance();
-                                db.collection("ThongTinNongTrai").document(USERID)
+                                db.collection("ThongTinTaiKhoan").document(USERID)
+                                        .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                                         .update("tongTienNongTrai",FARMCOIN - donGiaSP)
                                         .addOnSuccessListener(aVoid -> {
                                             Toast.makeText(getApplicationContext(), String.format("Farmcoin - %d.", donGiaSP), Toast.LENGTH_SHORT).show();
@@ -438,7 +441,19 @@ public class HappyFarmScreen extends AppCompatActivity {
 
         imgTimeSkip.setOnClickListener(v -> timeSkip());
 
-        imgThanhtich.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Chức năng này đang phát triển.", Toast.LENGTH_SHORT).show());
+        imgThanhtich.setOnClickListener(view -> {
+            LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            @SuppressLint("InflateParams") View view2 = inflater.inflate(R.layout.dialog_thanh_tich_screen, null);
+            //.....................
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(HappyFarmScreen.this);
+            builder.setTitle("Bảng thành tích")
+                    .setView(view2)
+                    .setNegativeButton("Đóng", (dialog, which) -> dialog.dismiss());
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            Toast.makeText(getApplicationContext(), "Chức năng này chưa phát triển.", Toast.LENGTH_SHORT).show();
+        });
 
     }
 
@@ -708,7 +723,8 @@ public class HappyFarmScreen extends AppCompatActivity {
             @Override
             public void run() {
                 db = FirebaseFirestore.getInstance();
-                db.collection("ThongTinNongTrai").document(USERID)
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                         .update("tongTienNongTrai",FARMCOIN - (100 * O_DAT_UNLOCKED))
                         .addOnSuccessListener(aVoid -> {
                             process+=50;
@@ -780,7 +796,8 @@ public class HappyFarmScreen extends AppCompatActivity {
                 @Override
                 public void run() {
                     db = FirebaseFirestore.getInstance();
-                    db.collection("ThongTinNongTrai").document(USERID)
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                             .update("giaTriTheLuc",STAMINA-=10)
                             .addOnSuccessListener(aVoid -> {
                                 process+=50;
@@ -818,7 +835,8 @@ public class HappyFarmScreen extends AppCompatActivity {
                     @Override
                     public void run() {
                         db = FirebaseFirestore.getInstance();
-                        db.collection("ThongTinNongTrai").document(USERID)
+                        db.collection("ThongTinTaiKhoan").document(USERID)
+                                .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                                 .update("giaTriTheLuc",STAMINA-10,
                                         "tongTienNongTrai",FARMCOIN - tienHatGiong)
                                 .addOnSuccessListener(aVoid -> {
@@ -877,7 +895,8 @@ public class HappyFarmScreen extends AppCompatActivity {
                 @Override
                 public void run() {
                     db = FirebaseFirestore.getInstance();
-                    db.collection("ThongTinNongTrai").document(USERID)
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                             .update("expLevel",FARMEXP + (5 * sanLuongThuHoach),
                                     "giaTriTheLuc", STAMINA - 10,
                                     "tongSoLuongLua", LUA,
@@ -962,7 +981,8 @@ public class HappyFarmScreen extends AppCompatActivity {
                     @Override
                     public void run() {
                         db = FirebaseFirestore.getInstance();
-                        db.collection("ThongTinNongTrai").document(USERID)
+                        db.collection("ThongTinTaiKhoan").document(USERID)
+                                .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                                 .update("giaTriTheLuc",STAMINA-10)
                                 .addOnSuccessListener(aVoid -> {
                                     process+=50;
@@ -1019,7 +1039,8 @@ public class HappyFarmScreen extends AppCompatActivity {
                     @Override
                     public void run() {
                         db = FirebaseFirestore.getInstance();
-                        db.collection("ThongTinNongTrai").document(USERID)
+                        db.collection("ThongTinTaiKhoan").document(USERID)
+                                .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                                 .update("giaTriTheLuc",STAMINA-10)
                                 .addOnSuccessListener(aVoid -> {
                                     process+=50;
@@ -1072,7 +1093,8 @@ public class HappyFarmScreen extends AppCompatActivity {
             @Override
             public void run() {
                 db = FirebaseFirestore.getInstance();
-                db.collection("ThongTinNongTrai").document(USERID)
+                db.collection("ThongTinTaiKhoan").document(USERID)
+                        .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                         .update("giaTriTheLuc", 150)
                         .addOnSuccessListener(aVoid -> {
                             process+=40;
@@ -1171,7 +1193,8 @@ public class HappyFarmScreen extends AppCompatActivity {
             case 1:
                 if (LUA >= soLuongMua){
                     db = FirebaseFirestore.getInstance();
-                    db.collection("ThongTinNongTrai").document(USERID)
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                             .update("expLevel",FARMEXP + 5 * soLuongMua ,
                                     "tongTienNongTrai",FARMCOIN+tienHang,
                                     "tongSoLuongLua",LUA-soLuongMua)
@@ -1192,7 +1215,8 @@ public class HappyFarmScreen extends AppCompatActivity {
             case 2:
                 if (CACHUA >= donHang.getSoLuongMua()){
                     db = FirebaseFirestore.getInstance();
-                    db.collection("ThongTinNongTrai").document(USERID)
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                             .update("tongTienNongTrai",FARMCOIN+tienHang,
                                     "tongSoLuongLua",CACHUA-soLuongMua)
                             .addOnSuccessListener(aVoid -> {
@@ -1213,7 +1237,8 @@ public class HappyFarmScreen extends AppCompatActivity {
             case 3:
                 if (CAROT >= donHang.getSoLuongMua()){
                     db = FirebaseFirestore.getInstance();
-                    db.collection("ThongTinNongTrai").document(USERID)
+                    db.collection("ThongTinTaiKhoan").document(USERID)
+                            .collection("ThongTinNongTrai").document("ThongTinNongTrai")
                             .update("tongTienNongTrai",FARMCOIN+tienHang,
                                     "tongSoLuongLua",CAROT-soLuongMua)
                             .addOnSuccessListener(aVoid -> {
